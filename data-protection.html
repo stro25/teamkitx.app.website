@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Protection (GDPR) - TeamKitX</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#CCFF00">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000000;
+            color: white;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #CCFF00;
+            margin-bottom: 1rem;
+        }
+
+        .last-updated {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+        }
+
+        .section {
+            margin-bottom: 2.5rem;
+            padding: 1.5rem 0;
+        }
+
+        .section h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #CCFF00;
+            margin-bottom: 1rem;
+        }
+
+        .section h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #CCFF00;
+            margin-bottom: 0.8rem;
+            margin-top: 1.5rem;
+        }
+
+        .section p, .section ul {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1rem;
+        }
+
+        .section ul {
+            padding-left: 1.5rem;
+        }
+
+        .section li {
+            margin-bottom: 0.5rem;
+        }
+
+        .back-link {
+            background: #CCFF00;
+            color: black;
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .back-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(204, 255, 0, 0.3);
+        }
+
+        .contact-info {
+            background: #1A1A1A;
+            border: 1px solid rgba(204, 255, 0, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .contact-info h3 {
+            color: #CCFF00;
+            margin-bottom: 1rem;
+        }
+
+        .highlight-box {
+            background: #1A1A1A;
+            border: 1px solid rgba(204, 255, 0, 0.3);
+            border-radius: 10px;
+            padding: 1.2rem;
+            margin: 1rem 0;
+        }
+
+        .legal-basis {
+            background: rgba(0, 100, 200, 0.1);
+            border-left: 4px solid #0064c8;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        .data-table th,
+        .data-table td {
+            border: 1px solid rgba(204, 255, 0, 0.3);
+            padding: 12px;
+            text-align: left;
+        }
+
+        .data-table th {
+            background: #1A1A1A;
+            color: #CCFF00;
+            font-weight: 600;
+        }
+
+        .data-table td {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        strong {
+            color: #CCFF00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Home</a>
+        
+        <div class="header">
+            <h1>Data Protection (GDPR)</h1>
+            <p class="last-updated">Last updated: January 2025</p>
+        </div>
+
+        <div class="section">
+            <h2>GDPR Compliance Statement</h2>
+            <p>TeamKitX is committed to protecting your personal data and respecting your privacy rights under the General Data Protection Regulation (GDPR) and other applicable data protection laws. This document outlines how we collect, process, store, and protect your personal data in compliance with GDPR requirements.</p>
+            
+            <div class="highlight-box">
+                <p><strong>Data Controller:</strong> TeamKitX<br>
+                <strong>Contact:</strong> privacy@teamkitx.com<br>
+                <strong>Data Protection Officer:</strong> Available upon request</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Personal Data We Process</h2>
+            <p>Under GDPR, personal data means any information relating to an identified or identifiable natural person. We process the following categories of personal data:</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Data Category</th>
+                        <th>Data Types</th>
+                        <th>Purpose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Identity Data</strong></td>
+                        <td>Name, email address, member number</td>
+                        <td>Account creation, team management</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Team Data</strong></td>
+                        <td>Team affiliations, role, size profiles</td>
+                        <td>Team coordination, equipment fitting</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Equipment Data</strong></td>
+                        <td>Assignment records, condition assessments, photos</td>
+                        <td>Equipment management, accountability</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Financial Data</strong></td>
+                        <td>Damage charges, late fees, equipment values</td>
+                        <td>Charge calculation, inventory valuation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Photo Data</strong></td>
+                        <td>Equipment condition photos</td>
+                        <td>Documentation, condition tracking</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Technical Data</strong></td>
+                        <td>Device type, OS version, app version</td>
+                        <td>App functionality, technical support</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Usage Data</strong></td>
+                        <td>App interactions, feature usage</td>
+                        <td>Service improvement, analytics</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Legal Basis for Processing</h2>
+            <p>We process your personal data based on the following legal grounds under GDPR Article 6:</p>
+
+            <div class="legal-basis">
+                <h3>Legitimate Interest (Article 6(1)(f))</h3>
+                <ul>
+                    <li>Equipment management and accountability tracking</li>
+                    <li>App functionality and technical support</li>
+                    <li>Service improvement and analytics</li>
+                    <li>Security and fraud prevention</li>
+                </ul>
+            </div>
+
+            <div class="legal-basis">
+                <h3>Contract Performance (Article 6(1)(b))</h3>
+                <ul>
+                    <li>Providing sports equipment management services</li>
+                    <li>Processing assignments and returns</li>
+                    <li>Calculating damage and late fees</li>
+                    <li>Enabling team coordination features</li>
+                </ul>
+            </div>
+
+            <div class="legal-basis">
+                <h3>Consent (Article 6(1)(a))</h3>
+                <ul>
+                    <li>Photo uploads and documentation</li>
+                    <li>Marketing communications (where applicable)</li>
+                    <li>Non-essential notifications</li>
+                    <li>Optional features requiring explicit consent</li>
+                </ul>
+            </div>
+
+            <div class="legal-basis">
+                <h3>Legal Obligation (Article 6(1)(c))</h3>
+                <ul>
+                    <li>Compliance with applicable laws</li>
+                    <li>Response to legal requests</li>
+                    <li>Financial record-keeping requirements</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Your Rights Under GDPR</h2>
+            <p>As a data subject under GDPR, you have the following rights:</p>
+
+            <h3>Right of Access (Article 15)</h3>
+            <ul>
+                <li>Request confirmation of data processing</li>
+                <li>Obtain a copy of your personal data</li>
+                <li>Receive information about processing purposes and recipients</li>
+            </ul>
+
+            <h3>Right to Rectification (Article 16)</h3>
+            <ul>
+                <li>Correct inaccurate personal data</li>
+                <li>Complete incomplete personal data</li>
+                <li>Update outdated information</li>
+            </ul>
+
+            <h3>Right to Erasure / "Right to be Forgotten" (Article 17)</h3>
+            <ul>
+                <li>Request deletion of personal data when no longer necessary</li>
+                <li>Withdraw consent and request data deletion</li>
+                <li>Object to unlawful processing</li>
+            </ul>
+
+            <h3>Right to Restrict Processing (Article 18)</h3>
+            <ul>
+                <li>Limit processing while verifying accuracy</li>
+                <li>Restrict processing instead of deletion</li>
+                <li>Object to processing based on legitimate interests</li>
+            </ul>
+
+            <h3>Right to Data Portability (Article 20)</h3>
+            <ul>
+                <li>Receive personal data in structured, machine-readable format</li>
+                <li>Transmit data to another controller</li>
+                <li>Available for automated processing based on consent or contract</li>
+            </ul>
+
+            <h3>Right to Object (Article 21)</h3>
+            <ul>
+                <li>Object to processing based on legitimate interests</li>
+                <li>Object to direct marketing (absolute right)</li>
+                <li>Object to automated decision-making and profiling</li>
+            </ul>
+
+            <div class="highlight-box">
+                <p><strong>How to Exercise Your Rights:</strong><br>
+                Contact us at <strong>privacy@teamkitx.com</strong> or use the in-app data export feature for data portability requests. We will respond within 30 days as required by GDPR.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Data Processing Activities</h2>
+            
+            <h3>Data Collection</h3>
+            <ul>
+                <li><strong>Direct Collection:</strong> Information you provide during registration, team setup, and app usage</li>
+                <li><strong>Automatic Collection:</strong> Technical data, usage patterns, and app performance metrics</li>
+                <li><strong>Photo Upload:</strong> Equipment photos you choose to upload</li>
+                <li><strong>Third-Party Sources:</strong> Firebase Authentication for account verification</li>
+            </ul>
+
+            <h3>Data Processing Purposes</h3>
+            <ul>
+                <li>Providing sports equipment management services</li>
+                <li>Processing equipment assignments and returns</li>
+                <li>Tracking equipment condition and location</li>
+                <li>Calculating damage and late return charges</li>
+                <li>Enabling team coordination and member management</li>
+                <li>Photo documentation for accountability</li>
+                <li>Improving app performance and user experience</li>
+                <li>Providing customer support and technical assistance</li>
+                <li>Ensuring platform security and preventing fraud</li>
+            </ul>
+
+            <h3>Photo Processing</h3>
+            <p>We process equipment photos with special care:</p>
+            <ul>
+                <li>Photos are processed solely for equipment documentation</li>
+                <li>No facial recognition or biometric analysis is performed</li>
+                <li>Photos visible only to authorized team members</li>
+                <li>Secure storage with access controls</li>
+                <li>Can be deleted at any time upon request</li>
+            </ul>
+
+            <h3>Automated Decision-Making</h3>
+            <p>We may use automated processing for:</p>
+            <ul>
+                <li>Damage charge calculation based on condition changes</li>
+                <li>Late fee calculation based on return dates</li>
+                <li>Low stock alerts based on inventory levels</li>
+                <li>App performance optimization</li>
+            </ul>
+            <p>You have the right to object to automated decision-making and request human intervention where it significantly affects you.</p>
+        </div>
+
+        <div class="section">
+            <h2>Data Sharing and International Transfers</h2>
+            
+            <h3>Data Recipients</h3>
+            <p>We may share your personal data with:</p>
+            <ul>
+                <li><strong>Team Members:</strong> Limited data sharing for team functionality</li>
+                <li><strong>Service Providers:</strong> Google Firebase (hosting), cloud storage providers</li>
+                <li><strong>TeamWalletX:</strong> When integration is enabled (for automated penalty creation)</li>
+                <li><strong>Legal Authorities:</strong> When required by law or legal process</li>
+            </ul>
+
+            <h3>International Data Transfers</h3>
+            <p>Your data may be transferred to and processed in countries outside the EEA, including:</p>
+            <ul>
+                <li><strong>United States:</strong> Google Firebase services (adequacy decision/Standard Contractual Clauses)</li>
+                <li><strong>Other Countries:</strong> As necessary for service provision with appropriate safeguards</li>
+            </ul>
+            
+            <h3>Transfer Safeguards</h3>
+            <ul>
+                <li>Standard Contractual Clauses (SCCs) approved by the European Commission</li>
+                <li>Adequacy decisions where applicable</li>
+                <li>Binding Corporate Rules (BCRs) for multinational processors</li>
+                <li>Technical and organizational measures ensuring data protection</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Data Retention and Deletion</h2>
+            
+            <h3>Retention Periods</h3>
+            <ul>
+                <li><strong>Account Data:</strong> Retained while account is active and up to 3 years after deletion</li>
+                <li><strong>Equipment Records:</strong> Retained for accountability and up to 7 years for financial records</li>
+                <li><strong>Photos:</strong> Retained until manually deleted or account closure</li>
+                <li><strong>Technical Data:</strong> Retained for up to 2 years for security and improvement purposes</li>
+                <li><strong>Assignment History:</strong> Retained for up to 5 years for accountability purposes</li>
+            </ul>
+
+            <h3>Automatic Deletion</h3>
+            <ul>
+                <li>Inactive accounts may be deleted after 2 years of no activity</li>
+                <li>Technical logs automatically deleted after specified retention periods</li>
+                <li>Temporary files and cache data regularly purged</li>
+                <li>Deleted photos removed from storage within 7 days</li>
+            </ul>
+
+            <h3>Deletion Process</h3>
+            <p>When you request account deletion or exercise your right to erasure:</p>
+            <ul>
+                <li>Personal identifiers are immediately anonymized or pseudonymized</li>
+                <li>Data is marked for deletion and removed within 30 days</li>
+                <li>Photos are permanently deleted from cloud storage</li>
+                <li>Some data may be retained longer for legal compliance</li>
+                <li>You will receive confirmation of deletion completion</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Data Security Measures</h2>
+            
+            <h3>Technical Safeguards</h3>
+            <ul>
+                <li><strong>Encryption:</strong> AES-256 encryption for data at rest and TLS 1.3 for data in transit</li>
+                <li><strong>Access Controls:</strong> Multi-factor authentication and role-based access</li>
+                <li><strong>Photo Security:</strong> Secure cloud storage with access restrictions</li>
+                <li><strong>Network Security:</strong> Firewalls, intrusion detection, and DDoS protection</li>
+                <li><strong>Monitoring:</strong> 24/7 security monitoring and incident response</li>
+            </ul>
+
+            <h3>Organizational Measures</h3>
+            <ul>
+                <li>Regular security training for personnel</li>
+                <li>Data minimization and privacy by design principles</li>
+                <li>Regular security audits and penetration testing</li>
+                <li>Incident response and breach notification procedures</li>
+            </ul>
+
+            <h3>Data Breach Response</h3>
+            <p>In case of a personal data breach:</p>
+            <ul>
+                <li>We will assess the breach within 24 hours</li>
+                <li>Notify supervisory authorities within 72 hours if high risk</li>
+                <li>Inform affected individuals without undue delay if high risk to rights</li>
+                <li>Implement measures to mitigate adverse effects</li>
+                <li>Document the breach and response measures</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Children's Data Protection</h2>
+            <p>Special protections apply to children's personal data under GDPR:</p>
+            <ul>
+                <li><strong>Age Verification:</strong> We verify users are 16+ or have parental consent (lower ages where national law permits)</li>
+                <li><strong>Parental Rights:</strong> Parents can exercise rights on behalf of children under 16</li>
+                <li><strong>Enhanced Protection:</strong> Additional safeguards for data processing involving minors</li>
+                <li><strong>Consent Requirements:</strong> Parental consent required for data processing of children under 16</li>
+                <li><strong>Photo Restrictions:</strong> Extra care taken with photos involving minors</li>
+            </ul>
+            
+            <div class="highlight-box">
+                <p><strong>Sports Team Context:</strong> TeamKitX is designed for sports teams and may be used by minors under team supervision. Team administrators must ensure appropriate consents are obtained.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Supervisory Authority</h2>
+            <p>You have the right to lodge a complaint with a supervisory authority if you believe our processing of your personal data violates GDPR.</p>
+            
+            <h3>EU Data Protection Authorities</h3>
+            <ul>
+                <li><strong>Your Local Authority:</strong> Contact the data protection authority in your EU member state</li>
+                <li><strong>Lead Authority:</strong> We cooperate with lead supervisory authorities under GDPR's one-stop-shop mechanism</li>
+                <li><strong>Complaint Process:</strong> You can file complaints online or by mail with relevant authorities</li>
+            </ul>
+
+            <h3>Contact Before Complaints</h3>
+            <p>We encourage you to contact us first at <strong>privacy@teamkitx.com</strong> to resolve any data protection concerns. We are committed to working with you to address any issues promptly and effectively.</p>
+        </div>
+
+        <div class="section">
+            <h2>Updates to This Data Protection Notice</h2>
+            <p>We may update this GDPR compliance document to reflect:</p>
+            <ul>
+                <li>Changes in applicable data protection laws</li>
+                <li>Updates to our data processing activities</li>
+                <li>New features or services that affect data processing</li>
+                <li>Feedback from supervisory authorities or users</li>
+            </ul>
+            
+            <p>We will notify you of significant changes through:</p>
+            <ul>
+                <li>Email notifications to registered users</li>
+                <li>In-app notifications highlighting key changes</li>
+                <li>Updates posted on our website with change summaries</li>
+            </ul>
+        </div>
+
+        <div class="contact-info">
+            <h3>Data Protection Contact</h3>
+            <p>For all data protection inquiries, rights requests, or GDPR-related questions:</p>
+            <p><strong>Email:</strong> info@teamkitx.app<br>
+            <strong>Subject Line:</strong> GDPR / Data Protection Inquiry<br>
+            <strong>Response Time:</strong> Within 30 days as required by GDPR</p>
+            
+            <p>TeamKitX<br>
+            Committed to your privacy rights under GDPR</p>
+        </div>
+    </div>
+</body>
+</html>
+

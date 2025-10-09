@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Features & Pricing - TeamKitX</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#CCFF00">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000000;
+            color: white;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            padding: 20px 0;
+            position: relative;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(204, 255, 0, 0.2);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #CCFF00;
+            letter-spacing: -1px;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #CCFF00;
+        }
+
+        .cta-button {
+            background: #CCFF00;
+            color: black;
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(204, 255, 0, 0.3);
+        }
+
+        /* Hero Section */
+        .features-hero {
+            padding: 80px 0 60px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(204, 255, 0, 0.1) 0%, rgba(0, 0, 0, 0.8) 100%);
+        }
+
+        .features-hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #CCFF00, #66CC00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .features-hero p {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        /* Pricing Cards */
+        .pricing-section {
+            padding: 60px 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .pricing-card {
+            background: #1A1A1A;
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card.featured {
+            border-color: #CCFF00;
+            transform: scale(1.05);
+        }
+
+        .pricing-card.featured::before {
+            content: 'Most Popular';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #CCFF00;
+            color: black;
+            text-align: center;
+            padding: 0.5rem;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(204, 255, 0, 0.5);
+        }
+
+        .pricing-card.featured:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+
+        .plan-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #CCFF00, #66CC00);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pricing-card h3 {
+            color: #CCFF00;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-card .plan-subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .price-period {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .features-list li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+
+        .features-list li::before {
+            content: '✅';
+            margin-right: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .upgrade-btn {
+            width: 100%;
+            padding: 1rem;
+            background: transparent;
+            border: 2px solid #CCFF00;
+            color: #CCFF00;
+            border-radius: 10px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .upgrade-btn:hover {
+            background: #CCFF00;
+            color: black;
+        }
+
+        .pricing-card.featured .upgrade-btn {
+            background: #CCFF00;
+            color: black;
+        }
+
+        .pricing-card.featured .upgrade-btn:hover {
+            background: white;
+        }
+
+        /* Features Matrix */
+        .features-matrix {
+            padding: 80px 0;
+        }
+
+        .matrix-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .matrix-header h2 {
+            font-size: 2.5rem;
+            color: #CCFF00;
+            margin-bottom: 1rem;
+        }
+
+        .matrix-header p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .feature-category {
+            background: #1A1A1A;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+            border: 1px solid rgba(204, 255, 0, 0.2);
+        }
+
+        .category-header {
+            background: linear-gradient(45deg, #CCFF00, #66CC00);
+            color: black;
+            padding: 1.5rem 2rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .feature-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .feature-table th,
+        .feature-table td {
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-table th {
+            background: rgba(204, 255, 0, 0.1);
+            color: #CCFF00;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .feature-table td:first-child {
+            text-align: left;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .feature-available {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .feature-unavailable {
+            color: #666;
+        }
+
+        .feature-premium {
+            color: #CCFF00;
+            font-weight: bold;
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 0 40px;
+            background: #1A1A1A;
+            border-top: 1px solid rgba(204, 255, 0, 0.2);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: #CCFF00;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            line-height: 1.8;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #CCFF00;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .legal-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .legal-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .legal-links a:hover {
+            color: #CCFF00;
+        }
+
+        /* Mobile Navigation */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 2rem;
+        }
+
+        .mobile-menu.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mobile-menu-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        .mobile-menu-links {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .mobile-menu-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .mobile-menu-links a:hover,
+        .mobile-menu-links a.active {
+            color: #CCFF00;
+        }
+
+        .mobile-menu-cta {
+            margin-top: 2rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .features-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-card.featured {
+                transform: none;
+            }
+
+            .pricing-card.featured:hover {
+                transform: translateY(-10px);
+            }
+
+            .feature-table {
+                font-size: 0.8rem;
+            }
+
+            .feature-table th,
+            .feature-table td {
+                padding: 0.5rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Feature Icons */
+        .feature-icon-small {
+            font-size: 1.2rem;
+            margin-right: 0.5rem;
+        }
+
+        /* Table Container */
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">TeamKitX</a>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="features.html" class="active">Features</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                    <li><a href="#" class="cta-button">Get the App</a></li>
+                </ul>
+                <button class="mobile-menu-toggle" id="mobile-menu-toggle">☰</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <button class="mobile-menu-close" id="mobile-menu-close">×</button>
+        <div class="mobile-menu-links">
+            <a href="index.html">Home</a>
+            <a href="features.html" class="active">Features & Pricing</a>
+            <a href="index.html#contact">Contact</a>
+            <div class="mobile-menu-cta">
+                <a href="#" class="cta-button">Get the App</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Hero -->
+    <section class="features-hero">
+        <div class="container">
+            <h1>Features & Pricing</h1>
+            <p>Choose the perfect plan for your team. From small clubs to large organizations, we have solutions for everyone.</p>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing-section">
+        <div class="container">
+            <div class="pricing-grid">
+                <!-- Free Plan -->
+                <div class="pricing-card fade-in-up">
+                    <div class="plan-icon">🎯</div>
+                    <h3>Free</h3>
+                    <p class="plan-subtitle">Perfect for small teams</p>
+                    <div class="price">€0</div>
+                    <div class="price-period">forever</div>
+                    <ul class="features-list">
+                        <li>Up to 20 items</li>
+                        <li>Up to 10 members</li>
+                        <li>Basic inventory tracking</li>
+                        <li>Assignment management</li>
+                        <li>Photo documentation (5 photos/item)</li>
+                        <li>Mobile app access</li>
+                        <li>Email support</li>
+                    </ul>
+                    <a href="#" class="upgrade-btn">Get Started</a>
+                </div>
+
+                <!-- Team Plan -->
+                <div class="pricing-card featured fade-in-up">
+                    <div class="plan-icon">🏆</div>
+                    <h3>Team</h3>
+                    <p class="plan-subtitle">For serious teams</p>
+                    <div class="price">€9.99</div>
+                    <div class="price-period">per month</div>
+                    <ul class="features-list">
+                        <li>Unlimited items</li>
+                        <li>Unlimited members</li>
+                        <li>Advanced filtering & search</li>
+                        <li>Unlimited photo storage</li>
+                        <li>Condition tracking & alerts</li>
+                        <li>TeamWalletX integration</li>
+                        <li>Advanced analytics</li>
+                        <li>Priority support</li>
+                    </ul>
+                    <a href="#" class="upgrade-btn">Get Started</a>
+                </div>
+
+                <!-- Organization Plan -->
+                <div class="pricing-card fade-in-up">
+                    <div class="plan-icon">👑</div>
+                    <h3>Organization</h3>
+                    <p class="plan-subtitle">Multi-team management</p>
+                    <div class="price">€29.99</div>
+                    <div class="price-period">per month</div>
+                    <ul class="features-list">
+                        <li>All Team features</li>
+                        <li>Multiple teams</li>
+                        <li>Multi-sport support</li>
+                        <li>Shared equipment pools</li>
+                        <li>Organization-wide analytics</li>
+                        <li>Custom roles & permissions</li>
+                        <li>API access</li>
+                        <li>Dedicated support</li>
+                    </ul>
+                    <a href="#" class="upgrade-btn">Get Started</a>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem; color: rgba(255, 255, 255, 0.6);">
+                <p>💡 Save 2 months with annual billing • All plans include 14-day free trial</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Matrix -->
+    <section class="features-matrix">
+        <div class="container">
+            <div class="matrix-header">
+                <h2>Complete Feature Comparison</h2>
+                <p>See exactly what features are available in each plan to find the perfect fit for your team's needs.</p>
+            </div>
+
+            <!-- Inventory Management -->
+            <div class="feature-category">
+                <div class="category-header">
+                    <span class="feature-icon-small">📦</span>
+                    Inventory Management
+                </div>
+                <div class="table-container">
+                    <table class="feature-table">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Free</th>
+                                <th>Team</th>
+                                <th>Organization</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Items Limit</td>
+                                <td class="feature-premium">20 items</td>
+                                <td class="feature-available">Unlimited</td>
+                                <td class="feature-available">Unlimited</td>
+                            </tr>
+                            <tr>
+                                <td>Item Categories</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                            <tr>
+                                <td>Custom Item Types</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                            <tr>
+                                <td>Condition Tracking</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                            <tr>
+                                <td>Location Tracking</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                            <tr>
+                                <td>Bulk Operations</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                            <tr>
+                                <td>Advanced Filtering</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                            <tr>
+                                <td>Photo Storage</td>
+                                <td class="feature-premium">5 per item</td>
+                                <td class="feature-available">Unlimited</td>
+                                <td class="feature-available">Unlimited</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Assignment Management -->
+            <div class="feature-category">
+                <div class="category-header">
+                    <span class="feature-icon-small">🔄</span>
+                    Assignment Management
+                </div>
+                <div class="table-container">
+                    <table class="feature-table">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Free</th>
+                                <th>Team</th>
+                                <th>Organization</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Item Assignments</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                            <tr>
+                                <td>Overdue Tracking</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                            <tr>
+                                <td>Condition Comparison</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                            <tr>
+                                <td>Damage Charge Calculation</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                            <tr>
+                                <td>Late Fee Calculation</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                            <tr>
+                                <td>Assignment History</td>
+                                <td class="feature-premium">30 days</td>
+                                <td class="feature-available">Unlimited</td>
+                                <td class="feature-available">Unlimited</td>
+                            </tr>
+                            <tr>
+                                <td>Bulk Assignments</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                            <tr>
+                                <td>Photo Documentation</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Member Management -->
+            <div class="feature-category">
+                <div class="category-header">
+                    <span class="feature-icon-small">👥</span>
+                    Member Management
+                </div>
+                <div class="table-container">
+                    <table class="feature-table">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Free</th>
+                                <th>Team</th>
+                                <th>Organization</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Members Limit</td>
+                                <td class="feature-premium">10 members</td>
+                                <td class="feature-available">Unlimited</td>
+                                <td class="feature-available">Unlimited</td>
+                            </tr>
+                            <tr>
+                                <td>Size Profiles</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                            <tr>
+                                <td>Role Management</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                            <tr>
+                                <td>Assignment History</td>
+                                <td class="feature-premium">30 days</td>
+                                <td class="feature-available">Unlimited</td>
+                                <td class="feature-available">Unlimited</td>
+                            </tr>
+                            <tr>
+                                <td>Responsibility Tracking</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                            <tr>
+                                <td>Custom Fields</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Analytics & Reporting -->
+            <div class="feature-category">
+                <div class="category-header">
+                    <span class="feature-icon-small">📊</span>
+                    Analytics & Reporting
+                </div>
+                <div class="table-container">
+                    <table class="feature-table">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Free</th>
+                                <th>Team</th>
+                                <th>Organization</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Basic Dashboard</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                            <tr>
+                                <td>Inventory Analytics</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                            <tr>
+                                <td>Utilization Tracking</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                            <tr>
+                                <td>Cost Analysis</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                            <tr>
+                                <td>Custom Reports</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                            <tr>
+                                <td>Data Export</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-premium">CSV</td>
+                                <td class="feature-premium">CSV, Excel, PDF</td>
+                            </tr>
+                            <tr>
+                                <td>Multi-Team Analytics</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Integration & Advanced -->
+            <div class="feature-category">
+                <div class="category-header">
+                    <span class="feature-icon-small">🔗</span>
+                    Integration & Advanced Features
+                </div>
+                <div class="table-container">
+                    <table class="feature-table">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Free</th>
+                                <th>Team</th>
+                                <th>Organization</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>TeamWalletX Integration</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                            <tr>
+                                <td>Auto Penalty Creation</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                            <tr>
+                                <td>QR Code Scanning</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                            <tr>
+                                <td>Low Stock Alerts</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                            <tr>
+                                <td>Maintenance Reminders</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-available">✅</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                            <tr>
+                                <td>API Access</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                            <tr>
+                                <td>Custom Roles & Permissions</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-unavailable">❌</td>
+                                <td class="feature-available">✅</td>
+                            </tr>
+                            <tr>
+                                <td>Priority Support</td>
+                                <td class="feature-unavailable">Email (48h)</td>
+                                <td class="feature-premium">Email (24h)</td>
+                                <td class="feature-premium">Dedicated (4h)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>TeamKitX</h3>
+                    <p>Revolutionizing sports equipment management with innovative technology and user-friendly design.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>info@teamkitx.app</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <p><a href="index.html">Home</a></p>
+                    <p><a href="features.html">Features</a></p>
+                    <p><a href="index.html#contact">Support</a></p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="legal-links">
+                    <a href="privacy-policy.html">Privacy Policy</a>
+                    <a href="terms-of-service.html">Terms of Service</a>
+                    <a href="data-protection.html">Data Protection (GDPR)</a>
+                </div>
+                <p>&copy; 2025 TeamKitX. All rights reserved.</p>
+                <p style="margin-top: 1rem; font-size: 0.8rem; color: rgba(255, 255, 255, 0.6);">
+                    Apple and App Store are trademarks of Apple Inc., registered in the U.S. and other countries.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuClose = document.getElementById('mobile-menu-close');
+
+            // Open mobile menu
+            mobileMenuToggle.addEventListener('click', function() {
+                mobileMenu.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+
+            // Close mobile menu
+            function closeMobileMenu() {
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            mobileMenuClose.addEventListener('click', closeMobileMenu);
+
+            // Close menu when clicking outside
+            mobileMenu.addEventListener('click', function(e) {
+                if (e.target === mobileMenu) {
+                    closeMobileMenu();
+                }
+            });
+
+            // Close menu when clicking on a link
+            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', closeMobileMenu);
+            });
+
+            // Close menu with escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                    closeMobileMenu();
+                }
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Add fade-in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all pricing cards
+        document.querySelectorAll('.pricing-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.6s ease-out';
+            observer.observe(card);
+        });
+
+        // Observe all feature categories
+        document.querySelectorAll('.feature-category').forEach(category => {
+            category.style.opacity = '0';
+            category.style.transform = 'translateY(30px)';
+            category.style.transition = 'all 0.6s ease-out';
+            observer.observe(category);
+        });
+    </script>
+</body>
+</html>
+
