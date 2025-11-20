@@ -1772,23 +1772,24 @@
                     const initial = (userData.displayName || currentUser.email)[0].toUpperCase();
                     document.getElementById('user-avatar').textContent = initial;
 
-                    // Check Premium Status
-                    await checkPremiumStatus(userData);
-
-                    // Get user's team (check both new teamIds array and legacy teamId field)
+                    // Get user's team FIRST (we need this to check premium in member document)
                     console.log('🏆 User teamIds:', userData.teamIds);
                     console.log('🏆 User teamId (legacy):', userData.teamId);
                     
                     if (userData.teamIds && userData.teamIds.length > 0) {
                         userTeamId = userData.teamIds[0];
                         console.log('✅ Using team ID from teamIds array:', userTeamId);
-                        await loadTeamData();
-                        await loadInventory();
-                        await loadMembers();
                     } else if (userData.teamId) {
                         // Legacy field - single teamId
                         userTeamId = userData.teamId;
                         console.log('✅ Using legacy team ID:', userTeamId);
+                    }
+
+                    // Check Premium Status (after we have userTeamId)
+                    await checkPremiumStatus(userData);
+
+                    // Load team data
+                    if (userTeamId) {
                         await loadTeamData();
                         await loadInventory();
                         await loadMembers();
@@ -2724,8 +2725,47 @@
             try {
                 console.log('💎 Checking premium status...');
                 console.log('💎 User data received:', userData);
+                console.log('💎 Current userTeamId:', userTeamId);
                 
-                // Check if user has TeamKitX premium (PRIMARY CHECK)
+                // PRIMARY CHECK: Check team member document FIRST (this is where premium is stored!)
+                if (userTeamId && currentUser) {
+                    console.log('💎 Checking member document at: teams/' + userTeamId + '/members/' + currentUser.uid);
+                    
+                    const memberDoc = await db.collection('teams')
+                        .doc(userTeamId)
+                        .collection('members')
+                        .doc(currentUser.uid)
+                        .get();
+                    
+                    if (memberDoc.exists) {
+                        const memberData = memberDoc.data();
+                        console.log('👤 Member document exists! Data:', memberData);
+                        console.log('👤 teamKitXPremium:', memberData.teamKitXPremium);
+                        console.log('👤 teamWalletXPremium:', memberData.teamWalletXPremium);
+                        
+                        // Check TeamKitX premium at member level
+                        if (memberData.teamKitXPremium === true) {
+                            isPremium = true;
+                            console.log('✅ TeamKitX Premium access from member document!');
+                            updatePremiumUI(true);
+                            return;
+                        }
+                        
+                        if (memberData.hasPremiumAccess === true) {
+                            isPremium = true;
+                            console.log('✅ Premium access (hasPremiumAccess) from member document');
+                            updatePremiumUI(true);
+                            return;
+                        }
+                    } else {
+                        console.log('⚠️ Member document does not exist');
+                    }
+                }
+                
+                // SECONDARY CHECK: Check user document
+                console.log('💎 User doc - teamKitXPremium:', userData.teamKitXPremium);
+                console.log('💎 User doc - hasPremiumAccess:', userData.hasPremiumAccess);
+                
                 if (userData.teamKitXPremium === true) {
                     isPremium = true;
                     console.log('✅ TeamKitX Premium access granted from user document');
@@ -2739,28 +2779,6 @@
                     console.log('✅ Manual premium access granted (legacy field)');
                     updatePremiumUI(true);
                     return;
-                }
-
-                // Check subscription from userTeamId in teams/{teamId}/members/{userId}
-                if (userTeamId && currentUser) {
-                    const memberDoc = await db.collection('teams')
-                        .doc(userTeamId)
-                        .collection('members')
-                        .doc(currentUser.uid)
-                        .get();
-                    
-                    if (memberDoc.exists) {
-                        const memberData = memberDoc.data();
-                        console.log('👤 Member data:', memberData);
-                        
-                        // Check TeamKitX premium at member level
-                        if (memberData.teamKitXPremium === true || memberData.hasPremiumAccess === true) {
-                            isPremium = true;
-                            console.log('✅ Premium access from team member document');
-                            updatePremiumUI(true);
-                            return;
-                        }
-                    }
                 }
 
                 // Check subscription tier
