@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeamKitX - Web App</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <meta name="theme-color" content="#CCFF00">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(
+                135deg,
+                rgb(13, 13, 20) 0%,
+                rgb(20, 30, 13) 50%,
+                rgb(5, 5, 5) 100%
+            );
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background Glows */
+        .background-glow {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .glow-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(204, 255, 0, 0.15) 0%, rgba(204, 255, 0, 0.05) 50%, transparent 100%);
+            filter: blur(40px);
+            top: 15%;
+            left: 20%;
+        }
+
+        .glow-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(204, 255, 0, 0.1) 0%, rgba(204, 255, 0, 0.03) 50%, transparent 100%);
+            filter: blur(50px);
+            bottom: 30%;
+            right: 20%;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ============ LOGIN SCREEN ============ */
+        #login-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(204, 255, 0, 0.2);
+            border-radius: 20px;
+            padding: 60px 50px;
+            max-width: 480px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .login-logo h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #CCFF00;
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+        }
+
+        .login-logo p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: rgba(128, 128, 128, 0.2);
+            border: 1px solid rgba(204, 255, 0, 0.3);
+            border-radius: 10px;
+            padding: 12px 16px;
+            transition: all 0.3s ease;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: rgba(204, 255, 0, 0.6);
+            background: rgba(128, 128, 128, 0.25);
+        }
+
+        .input-icon {
+            color: #CCFF00;
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+
+        .form-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .password-toggle {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 4px 8px;
+            transition: color 0.3s ease;
+        }
+
+        .password-toggle:hover {
+            color: #CCFF00;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: 8px;
+        }
+
+        .forgot-password a {
+            color: #CCFF00;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: opacity 0.3s ease;
+        }
+
+        .forgot-password a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            background: #CCFF00;
+            color: black;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(204, 255, 0, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .cross-app-note {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cross-app-note p {
+            color: #CCFF00;
+            font-size: 0.85rem;
+        }
+
+        .error-message {
+            background: rgba(255, 59, 48, 0.2);
+            border: 1px solid rgba(255, 59, 48, 0.4);
+            color: #FF3B30;
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        /* ============ DASHBOARD ============ */
+        #dashboard {
+            display: none;
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        /* Header */
+        .dashboard-header {
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(204, 255, 0, 0.2);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-left h1 {
+            font-size: 1.8rem;
+            color: #CCFF00;
+            margin-bottom: 4px;
+        }
+
+        .header-left p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 16px;
+            background: rgba(204, 255, 0, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(204, 255, 0, 0.2);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #CCFF00;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: black;
+            font-size: 1.1rem;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .user-email {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .btn-logout {
+            padding: 10px 20px;
+            background: transparent;
+            border: 2px solid rgba(204, 255, 0, 0.3);
+            color: #CCFF00;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-logout:hover {
+            background: rgba(204, 255, 0, 0.1);
+            border-color: #CCFF00;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: rgba(26, 26, 26, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(204, 255, 0, 0.2);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(204, 255, 0, 0.4);
+            box-shadow: 0 10px 30px rgba(204, 255, 0, 0.1);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(204, 255, 0, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #CCFF00;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        /* Inventory Section */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 40px 0 20px;
+        }
+
+        .section-header h2 {
+            font-size: 1.8rem;
+            color: white;
+        }
+
+        .btn-add {
+            padding: 12px 24px;
+            background: #CCFF00;
+            color: black;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(204, 255, 0, 0.3);
+        }
+
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .inventory-card {
+            background: rgba(26, 26, 26, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(204, 255, 0, 0.2);
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .inventory-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(204, 255, 0, 0.4);
+            box-shadow: 0 10px 30px rgba(204, 255, 0, 0.1);
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 16px;
+        }
+
+        .item-type {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .item-id {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .item-condition {
+            padding: 6px 12px;
+            background: rgba(204, 255, 0, 0.2);
+            color: #CCFF00;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .item-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .item-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .detail-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .detail-value {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(204, 255, 0, 0.2);
+            border-top-color: #CCFF00;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.1rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-text {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 8px;
+        }
+
+        .empty-subtext {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 40px 30px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .inventory-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Glows -->
+    <div class="background-glow glow-1"></div>
+    <div class="background-glow glow-2"></div>
+
+    <!-- ============ LOGIN SCREEN ============ -->
+    <div id="login-screen">
+        <div class="login-container">
+            <div class="login-logo">
+                <h1>TeamKitX</h1>
+                <p>Kit Inventory Management Made Easy</p>
+            </div>
+
+            <div id="login-error" class="error-message" style="display: none;"></div>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">✉️</span>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            class="form-input" 
+                            placeholder="Enter your email address"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            class="form-input" 
+                            placeholder="Enter your password"
+                            required
+                        >
+                        <button type="button" class="password-toggle" id="toggle-password">👁️</button>
+                    </div>
+                    <div class="forgot-password">
+                        <a href="#" id="forgot-password-link">Forgot Password?</a>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary" id="login-btn">
+                    Sign In
+                </button>
+            </form>
+
+            <div class="cross-app-note">
+                <p>💡 Use your TeamKitX or TeamWalletX credentials</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ DASHBOARD ============ -->
+    <div id="dashboard">
+        <div class="dashboard-header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="header-left">
+                        <h1>TeamKitX Dashboard</h1>
+                        <p id="team-name">Loading...</p>
+                    </div>
+                    <div class="header-right">
+                        <div class="user-info">
+                            <div class="user-avatar" id="user-avatar">U</div>
+                            <div class="user-details">
+                                <div class="user-name" id="user-name">Loading...</div>
+                                <div class="user-email" id="user-email">Loading...</div>
+                            </div>
+                        </div>
+                        <button class="btn-logout" id="logout-btn">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📦</div>
+                    <div class="stat-value" id="total-items">0</div>
+                    <div class="stat-label">Total Items</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-value" id="available-items">0</div>
+                    <div class="stat-label">Available</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🔄</div>
+                    <div class="stat-value" id="assigned-items">0</div>
+                    <div class="stat-label">Assigned</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-value" id="total-members">0</div>
+                    <div class="stat-label">Team Members</div>
+                </div>
+            </div>
+
+            <!-- Inventory Section -->
+            <div class="section-header">
+                <h2>Inventory</h2>
+            </div>
+
+            <div id="loading-inventory" class="loading">
+                <div class="spinner"></div>
+                <div class="loading-text">Loading your inventory...</div>
+            </div>
+
+            <div id="empty-inventory" class="empty-state" style="display: none;">
+                <div class="empty-icon">📦</div>
+                <div class="empty-text">No items yet</div>
+                <div class="empty-subtext">Add items using the TeamKitX mobile app</div>
+            </div>
+
+            <div id="inventory-list" class="inventory-grid"></div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDkz9qUU4aAg_W8LrRjpElHEoS5pUxKMT8",
+            authDomain: "teamwalletx.firebaseapp.com",
+            projectId: "teamwalletx",
+            storageBucket: "teamwalletx.firebasestorage.app",
+            messagingSenderId: "759222037573",
+            appId: "1:759222037573:ios:0d7215e6f8276b2fe1472c"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // DOM Elements
+        const loginScreen = document.getElementById('login-screen');
+        const dashboard = document.getElementById('dashboard');
+        const loginForm = document.getElementById('login-form');
+        const loginError = document.getElementById('login-error');
+        const loginBtn = document.getElementById('login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const togglePassword = document.getElementById('toggle-password');
+        const passwordInput = document.getElementById('password');
+
+        // User Data
+        let currentUser = null;
+        let userTeamId = null;
+
+        // ============ AUTH FUNCTIONS ============
+
+        // Check Auth State
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                currentUser = user;
+                console.log('✅ User logged in:', user.email);
+                await loadUserData();
+                showDashboard();
+            } else {
+                currentUser = null;
+                showLogin();
+            }
+        });
+
+        // Login
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Signing in...';
+            loginError.style.display = 'none';
+
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                console.log('✅ Login successful');
+            } catch (error) {
+                console.error('❌ Login error:', error);
+                loginError.textContent = getErrorMessage(error.code);
+                loginError.style.display = 'block';
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Sign In';
+            }
+        });
+
+        // Logout
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                await auth.signOut();
+                console.log('✅ Logged out');
+            } catch (error) {
+                console.error('❌ Logout error:', error);
+            }
+        });
+
+        // Toggle Password Visibility
+        togglePassword.addEventListener('click', () => {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                togglePassword.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                togglePassword.textContent = '👁️';
+            }
+        });
+
+        // ============ DATA FUNCTIONS ============
+
+        async function loadUserData() {
+            try {
+                // Load user profile
+                const userDoc = await db.collection('users').doc(currentUser.uid).get();
+                
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    console.log('📄 User data:', userData);
+
+                    // Update UI
+                    document.getElementById('user-name').textContent = userData.displayName || currentUser.email.split('@')[0];
+                    document.getElementById('user-email').textContent = currentUser.email;
+                    
+                    // Set avatar initial
+                    const initial = (userData.displayName || currentUser.email)[0].toUpperCase();
+                    document.getElementById('user-avatar').textContent = initial;
+
+                    // Get user's team
+                    if (userData.teamIds && userData.teamIds.length > 0) {
+                        userTeamId = userData.teamIds[0];
+                        await loadTeamData();
+                        await loadInventory();
+                        await loadMembers();
+                    } else {
+                        document.getElementById('team-name').textContent = 'No team assigned';
+                        document.getElementById('empty-inventory').style.display = 'block';
+                        document.getElementById('loading-inventory').style.display = 'none';
+                    }
+                } else {
+                    console.log('⚠️ No user profile found in Firestore');
+                    document.getElementById('user-name').textContent = currentUser.email.split('@')[0];
+                    document.getElementById('user-email').textContent = currentUser.email;
+                }
+            } catch (error) {
+                console.error('❌ Error loading user data:', error);
+            }
+        }
+
+        async function loadTeamData() {
+            try {
+                const teamDoc = await db.collection('teams').doc(userTeamId).get();
+                
+                if (teamDoc.exists) {
+                    const teamData = teamDoc.data();
+                    document.getElementById('team-name').textContent = teamData.name || 'My Team';
+                    console.log('🏆 Team loaded:', teamData.name);
+                }
+            } catch (error) {
+                console.error('❌ Error loading team:', error);
+            }
+        }
+
+        async function loadInventory() {
+            const loadingDiv = document.getElementById('loading-inventory');
+            const emptyDiv = document.getElementById('empty-inventory');
+            const inventoryList = document.getElementById('inventory-list');
+
+            try {
+                loadingDiv.style.display = 'block';
+                emptyDiv.style.display = 'none';
+                inventoryList.innerHTML = '';
+
+                // Query inventory items for this team
+                const itemsSnapshot = await db.collection('kitItems')
+                    .where('teamId', '==', userTeamId)
+                    .orderBy('createdAt', 'desc')
+                    .limit(50)
+                    .get();
+
+                console.log('📦 Found', itemsSnapshot.size, 'items');
+
+                if (itemsSnapshot.empty) {
+                    loadingDiv.style.display = 'none';
+                    emptyDiv.style.display = 'block';
+                    updateStats(0, 0, 0);
+                    return;
+                }
+
+                let totalItems = 0;
+                let availableItems = 0;
+                let assignedItems = 0;
+
+                itemsSnapshot.forEach(doc => {
+                    const item = doc.data();
+                    totalItems++;
+                    
+                    // Check if item is assigned
+                    if (item.currentLocation === 'assigned' || item.assignedTo) {
+                        assignedItems++;
+                    } else {
+                        availableItems++;
+                    }
+
+                    renderInventoryCard(item);
+                });
+
+                updateStats(totalItems, availableItems, assignedItems);
+                loadingDiv.style.display = 'none';
+
+            } catch (error) {
+                console.error('❌ Error loading inventory:', error);
+                loadingDiv.style.display = 'none';
+                emptyDiv.style.display = 'block';
+                emptyDiv.querySelector('.empty-text').textContent = 'Error loading inventory';
+                emptyDiv.querySelector('.empty-subtext').textContent = error.message;
+            }
+        }
+
+        async function loadMembers() {
+            try {
+                const membersSnapshot = await db.collection('teamMembers')
+                    .where('teamId', '==', userTeamId)
+                    .get();
+
+                const memberCount = membersSnapshot.size;
+                document.getElementById('total-members').textContent = memberCount;
+                console.log('👥 Found', memberCount, 'members');
+            } catch (error) {
+                console.error('❌ Error loading members:', error);
+            }
+        }
+
+        function renderInventoryCard(item) {
+            const inventoryList = document.getElementById('inventory-list');
+            
+            const card = document.createElement('div');
+            card.className = 'inventory-card';
+            
+            const itemType = formatItemType(item.itemType);
+            const condition = formatCondition(item.condition);
+            const location = formatLocation(item.currentLocation);
+            
+            card.innerHTML = `
+                <div class="item-header">
+                    <div>
+                        <div class="item-type">${itemType}</div>
+                        <div class="item-id">#${item.uniqueIdentifier || 'N/A'}</div>
+                    </div>
+                    <div class="item-condition">${condition}</div>
+                </div>
+                <div class="item-details">
+                    <div class="item-detail">
+                        <span class="detail-label">Size</span>
+                        <span class="detail-value">${item.size || 'N/A'}</span>
+                    </div>
+                    <div class="item-detail">
+                        <span class="detail-label">Color</span>
+                        <span class="detail-value">${item.colorVariant || 'N/A'}</span>
+                    </div>
+                    <div class="item-detail">
+                        <span class="detail-label">Season</span>
+                        <span class="detail-value">${item.season || 'N/A'}</span>
+                    </div>
+                    <div class="item-detail">
+                        <span class="detail-label">Location</span>
+                        <span class="detail-value">${location}</span>
+                    </div>
+                </div>
+            `;
+            
+            inventoryList.appendChild(card);
+        }
+
+        function updateStats(total, available, assigned) {
+            document.getElementById('total-items').textContent = total;
+            document.getElementById('available-items').textContent = available;
+            document.getElementById('assigned-items').textContent = assigned;
+        }
+
+        // ============ HELPER FUNCTIONS ============
+
+        function formatItemType(type) {
+            if (!type) return 'Unknown';
+            return type.replace(/_/g, ' ').split(' ').map(word => 
+                word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+            ).join(' ');
+        }
+
+        function formatCondition(condition) {
+            const conditions = {
+                'new': '✨ New',
+                'excellent': '💚 Excellent',
+                'good': '👍 Good',
+                'fair': '⚠️ Fair',
+                'worn': '📉 Worn',
+                'poor': '🔴 Poor',
+                'damaged': '💔 Damaged'
+            };
+            return conditions[condition] || condition || 'Unknown';
+        }
+
+        function formatLocation(location) {
+            const locations = {
+                'storage': '🏠 Storage',
+                'assigned': '👤 Assigned',
+                'maintenance': '🔧 Maintenance',
+                'transit': '🚚 In Transit',
+                'lost': '❌ Lost'
+            };
+            return locations[location] || location || 'Unknown';
+        }
+
+        function getErrorMessage(errorCode) {
+            const errors = {
+                'auth/invalid-email': 'Invalid email address',
+                'auth/user-disabled': 'This account has been disabled',
+                'auth/user-not-found': 'No account found with this email',
+                'auth/wrong-password': 'Incorrect password',
+                'auth/invalid-credential': 'Invalid email or password',
+                'auth/too-many-requests': 'Too many failed attempts. Try again later'
+            };
+            return errors[errorCode] || 'Login failed. Please try again.';
+        }
+
+        function showLogin() {
+            loginScreen.style.display = 'flex';
+            dashboard.style.display = 'none';
+        }
+
+        function showDashboard() {
+            loginScreen.style.display = 'none';
+            dashboard.style.display = 'block';
+        }
+
+        // Forgot Password
+        document.getElementById('forgot-password-link').addEventListener('click', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            
+            if (!email) {
+                alert('Please enter your email address first');
+                return;
+            }
+
+            try {
+                await auth.sendPasswordResetEmail(email);
+                alert('Password reset email sent! Check your inbox.');
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>
+
