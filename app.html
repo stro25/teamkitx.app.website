@@ -842,16 +842,25 @@
                     const initial = (userData.displayName || currentUser.email)[0].toUpperCase();
                     document.getElementById('user-avatar').textContent = initial;
 
-                    // Get user's team
+                    // Get user's team (check both new teamIds array and legacy teamId field)
                     console.log('🏆 User teamIds:', userData.teamIds);
+                    console.log('🏆 User teamId (legacy):', userData.teamId);
+                    
                     if (userData.teamIds && userData.teamIds.length > 0) {
                         userTeamId = userData.teamIds[0];
-                        console.log('✅ Using team ID:', userTeamId);
+                        console.log('✅ Using team ID from teamIds array:', userTeamId);
+                        await loadTeamData();
+                        await loadInventory();
+                        await loadMembers();
+                    } else if (userData.teamId) {
+                        // Legacy field - single teamId
+                        userTeamId = userData.teamId;
+                        console.log('✅ Using legacy team ID:', userTeamId);
                         await loadTeamData();
                         await loadInventory();
                         await loadMembers();
                     } else {
-                        console.warn('⚠️ No teamIds found for user');
+                        console.warn('⚠️ No teamIds or teamId found for user');
                         document.getElementById('team-name').textContent = 'No team assigned';
                         document.getElementById('empty-inventory').style.display = 'block';
                         document.getElementById('loading-inventory').style.display = 'none';
@@ -862,7 +871,7 @@
                             uid: currentUser.uid,
                             email: currentUser.email,
                             path: 'users/' + currentUser.uid,
-                            suggestion: 'The user document exists but has no teamIds array. Please create or join a team through the TeamKitX mobile app.',
+                            suggestion: 'The user document exists but has no teamIds array or teamId field. Please create or join a team through the TeamKitX mobile app.',
                             userData: userData
                         });
                     }
