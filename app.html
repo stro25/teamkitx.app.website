@@ -517,6 +517,50 @@
             color: rgba(255, 255, 255, 0.4);
         }
 
+        /* Debug Panel */
+        .debug-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 59, 48, 0.9);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            max-width: 400px;
+            font-size: 0.85rem;
+            z-index: 1000;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .debug-panel h4 {
+            margin-bottom: 12px;
+            font-size: 1rem;
+        }
+
+        .debug-panel pre {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 0.75rem;
+        }
+
+        .debug-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.7;
+        }
+
+        .debug-close:hover {
+            opacity: 1;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .login-container {
@@ -547,6 +591,13 @@
     <!-- Background Glows -->
     <div class="background-glow glow-1"></div>
     <div class="background-glow glow-2"></div>
+
+    <!-- Debug Panel -->
+    <div id="debug-panel" class="debug-panel" style="display: none;">
+        <button class="debug-close" onclick="document.getElementById('debug-panel').style.display='none'">×</button>
+        <h4>🔍 Debug Info</h4>
+        <div id="debug-content"></div>
+    </div>
 
     <!-- ============ LOGIN SCREEN ============ -->
     <div id="login-screen">
@@ -690,6 +741,11 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
+        
+        // Test Firebase connection
+        console.log('🔥 Firebase initialized successfully');
+        console.log('🔥 Project ID:', firebaseConfig.projectId);
+        console.log('🔥 Auth Domain:', firebaseConfig.authDomain);
 
         // DOM Elements
         const loginScreen = document.getElementById('login-screen');
@@ -767,12 +823,16 @@
 
         async function loadUserData() {
             try {
+                console.log('🔍 Loading user data for UID:', currentUser.uid);
+                
                 // Load user profile
                 const userDoc = await db.collection('users').doc(currentUser.uid).get();
                 
+                console.log('📄 User document exists:', userDoc.exists);
+                
                 if (userDoc.exists) {
                     const userData = userDoc.data();
-                    console.log('📄 User data:', userData);
+                    console.log('📄 Full user data:', JSON.stringify(userData, null, 2));
 
                     // Update UI
                     document.getElementById('user-name').textContent = userData.displayName || currentUser.email.split('@')[0];
@@ -783,23 +843,50 @@
                     document.getElementById('user-avatar').textContent = initial;
 
                     // Get user's team
+                    console.log('🏆 User teamIds:', userData.teamIds);
                     if (userData.teamIds && userData.teamIds.length > 0) {
                         userTeamId = userData.teamIds[0];
+                        console.log('✅ Using team ID:', userTeamId);
                         await loadTeamData();
                         await loadInventory();
                         await loadMembers();
                     } else {
+                        console.warn('⚠️ No teamIds found for user');
                         document.getElementById('team-name').textContent = 'No team assigned';
                         document.getElementById('empty-inventory').style.display = 'block';
                         document.getElementById('loading-inventory').style.display = 'none';
+                        
+                        // Show debug panel
+                        showDebugPanel({
+                            issue: 'User has no team assigned',
+                            uid: currentUser.uid,
+                            email: currentUser.email,
+                            path: 'users/' + currentUser.uid,
+                            suggestion: 'The user document exists but has no teamIds array. Please create or join a team through the TeamKitX mobile app.',
+                            userData: userData
+                        });
                     }
                 } else {
-                    console.log('⚠️ No user profile found in Firestore');
+                    console.error('❌ No user document found in Firestore for UID:', currentUser.uid);
                     document.getElementById('user-name').textContent = currentUser.email.split('@')[0];
                     document.getElementById('user-email').textContent = currentUser.email;
+                    document.getElementById('team-name').textContent = 'User profile not found';
+                    document.getElementById('empty-inventory').style.display = 'block';
+                    document.getElementById('loading-inventory').style.display = 'none';
+                    
+                    // Show debug panel
+                    showDebugPanel({
+                        issue: 'No user document found',
+                        uid: currentUser.uid,
+                        email: currentUser.email,
+                        path: 'users/' + currentUser.uid,
+                        suggestion: 'This account may not have been created through the TeamKitX app, or the user document was not created properly.'
+                    });
                 }
             } catch (error) {
                 console.error('❌ Error loading user data:', error);
+                console.error('Error details:', error.message, error.code);
+                alert('Error loading user data: ' + error.message);
             }
         }
 
@@ -823,6 +910,7 @@
             const inventoryList = document.getElementById('inventory-list');
 
             try {
+                console.log('📦 Starting inventory load for team:', userTeamId);
                 loadingDiv.style.display = 'block';
                 emptyDiv.style.display = 'none';
                 inventoryList.innerHTML = '';
@@ -835,7 +923,11 @@
                     .limit(100)
                     .get();
 
-                console.log('📦 Found', itemsSnapshot.size, 'items');
+                console.log('📦 Query completed. Found', itemsSnapshot.size, 'items');
+                
+                if (itemsSnapshot.size > 0) {
+                    console.log('📦 First item sample:', itemsSnapshot.docs[0].data());
+                }
 
                 if (itemsSnapshot.empty) {
                     loadingDiv.style.display = 'none';
@@ -934,6 +1026,26 @@
             document.getElementById('total-items').textContent = total;
             document.getElementById('available-items').textContent = available;
             document.getElementById('assigned-items').textContent = assigned;
+        }
+
+        // ============ DEBUG FUNCTIONS ============
+
+        function showDebugPanel(data) {
+            const panel = document.getElementById('debug-panel');
+            const content = document.getElementById('debug-content');
+            
+            content.innerHTML = `
+                <p><strong>Issue:</strong> ${data.issue}</p>
+                <p><strong>UID:</strong> ${data.uid}</p>
+                <p><strong>Email:</strong> ${data.email}</p>
+                <p><strong>Firebase Path:</strong> ${data.path}</p>
+                <hr style="margin: 12px 0; opacity: 0.3;">
+                <p><strong>Suggestion:</strong></p>
+                <p style="font-size: 0.8rem;">${data.suggestion}</p>
+                ${data.userData ? `<hr style="margin: 12px 0; opacity: 0.3;"><p><strong>User Data:</strong></p><pre>${JSON.stringify(data.userData, null, 2)}</pre>` : ''}
+            `;
+            
+            panel.style.display = 'block';
         }
 
         // ============ HELPER FUNCTIONS ============
