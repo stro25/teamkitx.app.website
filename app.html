@@ -345,6 +345,15 @@
             box-shadow: 0 10px 30px rgba(204, 255, 0, 0.1);
         }
 
+        .stat-card[onclick] {
+            cursor: pointer;
+        }
+
+        .stat-card[onclick]:hover {
+            border-color: rgba(204, 255, 0, 0.6);
+            box-shadow: 0 15px 40px rgba(204, 255, 0, 0.2);
+        }
+
         .stat-icon {
             width: 50px;
             height: 50px;
@@ -561,6 +570,136 @@
             opacity: 1;
         }
 
+        /* Members Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: rgba(26, 26, 26, 0.95);
+            border: 1px solid rgba(204, 255, 0, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-header h2 {
+            font-size: 1.8rem;
+            color: #CCFF00;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 2rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .member-card {
+            background: rgba(40, 40, 40, 0.6);
+            border: 1px solid rgba(204, 255, 0, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .member-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(204, 255, 0, 0.4);
+        }
+
+        .member-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .member-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #CCFF00;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: black;
+            font-size: 1.2rem;
+        }
+
+        .member-info {
+            flex: 1;
+        }
+
+        .member-name {
+            font-weight: 600;
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .member-role {
+            display: inline-block;
+            padding: 4px 8px;
+            background: rgba(204, 255, 0, 0.2);
+            color: #CCFF00;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .member-email {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 8px;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .login-container {
@@ -597,6 +736,22 @@
         <button class="debug-close" onclick="document.getElementById('debug-panel').style.display='none'">×</button>
         <h4>🔍 Debug Info</h4>
         <div id="debug-content"></div>
+    </div>
+
+    <!-- Members Modal -->
+    <div id="members-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>👥 Team Members</h2>
+                <button class="modal-close" onclick="closeMembersModal()">×</button>
+            </div>
+            <div id="members-list" class="members-grid">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <div class="loading-text">Loading members...</div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- ============ LOGIN SCREEN ============ -->
@@ -694,7 +849,7 @@
                     <div class="stat-value" id="assigned-items">0</div>
                     <div class="stat-label">Assigned</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="showMembersModal()" style="cursor: pointer;">
                     <div class="stat-icon">👥</div>
                     <div class="stat-value" id="total-members">0</div>
                     <div class="stat-label">Team Members</div>
@@ -760,6 +915,8 @@
         // User Data
         let currentUser = null;
         let userTeamId = null;
+        let customItemTypes = {}; // Cache for custom item types
+        let teamMembers = []; // Store team members
 
         // ============ AUTH FUNCTIONS ============
 
@@ -924,12 +1081,25 @@
                 emptyDiv.style.display = 'none';
                 inventoryList.innerHTML = '';
 
-                // Query inventory items from team's subcollection
+                // First, load custom item types
+                console.log('🔧 Loading custom item types...');
+                const customTypesSnapshot = await db.collection('teams')
+                    .doc(userTeamId)
+                    .collection('customItemTypes')
+                    .get();
+                
+                customTypesSnapshot.forEach(doc => {
+                    const type = doc.data();
+                    customItemTypes[doc.id] = type.name;
+                });
+                console.log('🔧 Loaded', Object.keys(customItemTypes).length, 'custom types:', customItemTypes);
+
+                // Query inventory items from team's subcollection (increased limit to 200)
                 const itemsSnapshot = await db.collection('teams')
                     .doc(userTeamId)
                     .collection('kitItems')
                     .orderBy('createdAt', 'desc')
-                    .limit(100)
+                    .limit(200)
                     .get();
 
                 console.log('📦 Query completed. Found', itemsSnapshot.size, 'items');
@@ -980,15 +1150,75 @@
                 const membersSnapshot = await db.collection('teams')
                     .doc(userTeamId)
                     .collection('members')
+                    .orderBy('name', 'asc')
                     .get();
 
-                const memberCount = membersSnapshot.size;
+                teamMembers = [];
+                membersSnapshot.forEach(doc => {
+                    teamMembers.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+
+                const memberCount = teamMembers.length;
                 document.getElementById('total-members').textContent = memberCount;
-                console.log('👥 Found', memberCount, 'members');
+                console.log('👥 Found', memberCount, 'members:', teamMembers);
             } catch (error) {
                 console.error('❌ Error loading members:', error);
             }
         }
+
+        function showMembersModal() {
+            const modal = document.getElementById('members-modal');
+            const membersList = document.getElementById('members-list');
+            
+            modal.classList.add('active');
+            membersList.innerHTML = '';
+
+            if (teamMembers.length === 0) {
+                membersList.innerHTML = '<div class="empty-state"><div class="empty-text">No members found</div></div>';
+                return;
+            }
+
+            teamMembers.forEach(member => {
+                const initial = (member.name || member.displayName || 'U')[0].toUpperCase();
+                const roleDisplay = formatRole(member.role);
+                
+                const card = document.createElement('div');
+                card.className = 'member-card';
+                card.innerHTML = `
+                    <div class="member-header">
+                        <div class="member-avatar">${initial}</div>
+                        <div class="member-info">
+                            <div class="member-name">${member.name || member.displayName || 'Unknown'}</div>
+                            <span class="member-role">${roleDisplay}</span>
+                        </div>
+                    </div>
+                    ${member.email ? `<div class="member-email">${member.email}</div>` : ''}
+                `;
+                membersList.appendChild(card);
+            });
+        }
+
+        function closeMembersModal() {
+            document.getElementById('members-modal').classList.remove('active');
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', (e) => {
+            const modal = document.getElementById('members-modal');
+            if (e.target === modal) {
+                closeMembersModal();
+            }
+        });
+
+        // Close modal with escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeMembersModal();
+            }
+        });
 
         function renderInventoryCard(item) {
             const inventoryList = document.getElementById('inventory-list');
@@ -996,7 +1226,12 @@
             const card = document.createElement('div');
             card.className = 'inventory-card';
             
-            const itemType = formatItemType(item.itemType);
+            // Get item type - use custom name if it's a custom item
+            let itemType = formatItemType(item.itemType);
+            if (item.itemType === 'custom' && item.customItemTypeId && customItemTypes[item.customItemTypeId]) {
+                itemType = customItemTypes[item.customItemTypeId];
+            }
+            
             const condition = formatCondition(item.condition);
             const location = formatLocation(item.currentLocation);
             
@@ -1090,6 +1325,22 @@
                 'disposed': '🗑️ Disposed'
             };
             return locations[location] || location || 'Unknown';
+        }
+
+        function formatRole(role) {
+            const roles = {
+                'admin': 'Admin',
+                'player': 'Player',
+                'coach': 'Coach',
+                'assistant': 'Assistant',
+                'manager': 'Manager',
+                'physio': 'Physio',
+                'doctor': 'Doctor',
+                'kit_manager': 'Kit Manager',
+                'analyst': 'Analyst',
+                'nutritionist': 'Nutritionist'
+            };
+            return roles[role] || role || 'Member';
         }
 
         function getErrorMessage(errorCode) {
