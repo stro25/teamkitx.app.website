@@ -1167,6 +1167,17 @@
                 <!-- Dropdown Filters -->
                 <div class="filters-grid">
                     <div class="filter-dropdown">
+                        <select class="filter-select" id="filter-category" onchange="applyFilters()">
+                            <option value="">All Categories</option>
+                            <option value="Game Kits">👕 Game Kits</option>
+                            <option value="Training">🏃 Training</option>
+                            <option value="Goalkeeper">🥅 Goalkeeper</option>
+                            <option value="Equipment">⚽ Equipment</option>
+                            <option value="Accessories">🎒 Accessories</option>
+                            <option value="Other">📦 Other</option>
+                        </select>
+                    </div>
+                    <div class="filter-dropdown">
                         <select class="filter-select" id="filter-type" onchange="applyFilters()">
                             <option value="">All Item Types</option>
                         </select>
@@ -1305,11 +1316,13 @@
         // User Data
         let currentUser = null;
         let userTeamId = null;
-        let customItemTypes = {}; // Cache for custom item types
+        let customItemTypes = {}; // Cache for custom item types (name mapping)
+        let customItemTypeCategories = {}; // Cache for custom item type categories
         let teamMembers = []; // Store team members
         let allItems = []; // Store all inventory items for filtering
         let activeFilters = {
             search: '',
+            category: '',
             type: '',
             number: '',
             size: '',
@@ -1482,7 +1495,7 @@
                 emptyDiv.style.display = 'none';
                 inventoryList.innerHTML = '';
 
-                // First, load custom item types
+                // First, load custom item types with their categories
                 console.log('🔧 Loading custom item types...');
                 const customTypesSnapshot = await db.collection('teams')
                     .doc(userTeamId)
@@ -1492,6 +1505,7 @@
                 customTypesSnapshot.forEach(doc => {
                     const type = doc.data();
                     customItemTypes[doc.id] = type.name;
+                    customItemTypeCategories[doc.id] = type.category || 'Other';
                 });
                 console.log('🔧 Loaded', Object.keys(customItemTypes).length, 'custom types:', customItemTypes);
 
@@ -1766,6 +1780,7 @@
         function applyFilters() {
             // Get filter values
             activeFilters.search = document.getElementById('search-input').value.toLowerCase();
+            activeFilters.category = document.getElementById('filter-category').value;
             activeFilters.type = document.getElementById('filter-type').value;
             activeFilters.number = document.getElementById('filter-number').value;
             activeFilters.size = document.getElementById('filter-size').value;
@@ -1790,6 +1805,12 @@
                         (item.size && item.size.toLowerCase().includes(searchTerm));
                     
                     if (!matchesSearch) return false;
+                }
+
+                // Category filter
+                if (activeFilters.category) {
+                    const itemCategory = getItemCategory(item);
+                    if (itemCategory !== activeFilters.category) return false;
                 }
 
                 // Type filter
@@ -1883,6 +1904,7 @@
         function clearAllFilters() {
             // Clear all filter inputs
             document.getElementById('search-input').value = '';
+            document.getElementById('filter-category').value = '';
             document.getElementById('filter-type').value = '';
             document.getElementById('filter-number').value = '';
             document.getElementById('filter-size').value = '';
@@ -1899,6 +1921,7 @@
             // Reset active filters
             activeFilters = {
                 search: '',
+                category: '',
                 type: '',
                 number: '',
                 size: '',
@@ -1928,6 +1951,7 @@
             
             // Other filter badges
             const filterLabels = {
+                category: 'Category',
                 type: 'Type',
                 number: 'Number',
                 size: 'Size',
@@ -2057,6 +2081,37 @@
             
             const match = uniqueIdentifier.match(/#?(\d+)/);
             return match ? match[1] : null;
+        }
+
+        function getItemCategory(item) {
+            // If it's a custom item type, get category from customItemTypeCategories
+            if (item.itemType === 'custom' && item.customItemTypeId) {
+                return customItemTypeCategories[item.customItemTypeId] || 'Other';
+            }
+            
+            // Map standard item types to categories
+            const itemType = item.itemType;
+            switch(itemType) {
+                case 'jersey':
+                case 'shorts':
+                case 'socks':
+                    return 'Game Kits';
+                case 'trainingShirt':
+                case 'tracksuit':
+                case 'bibs':
+                    return 'Training';
+                case 'goalkeepingKit':
+                case 'gloves':
+                    return 'Goalkeeper';
+                case 'balls':
+                case 'cones':
+                case 'protectiveGear':
+                    return 'Equipment';
+                case 'boots':
+                    return 'Accessories';
+                default:
+                    return 'Other';
+            }
         }
 
         function formatColorBadge(colorVariant) {
