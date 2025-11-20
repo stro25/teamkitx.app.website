@@ -527,6 +527,10 @@
             flex-shrink: 0;
         }
 
+        .color-dot + .color-dot {
+            margin-left: -8px; /* Overlap multiple dots slightly */
+        }
+
         .color-name {
             font-size: 0.85rem;
             color: rgba(255, 255, 255, 0.8);
@@ -535,6 +539,10 @@
         .item-badges .color-dot {
             width: 20px;
             height: 20px;
+        }
+
+        .item-badges .color-dot + .color-dot {
+            margin-left: -6px; /* Overlap for badge dots */
         }
 
         .loading {
@@ -1653,14 +1661,29 @@
                 // Sizes
                 if (item.size) sizes.add(item.size);
                 
-                // Colors - convert hex to names
+                // Colors - convert hex to names and handle multiple colors
                 if (item.colorVariant) {
-                    if (item.colorVariant.startsWith('#')) {
-                        const colorName = getColorName(item.colorVariant);
-                        colors.set(item.colorVariant, colorName);
+                    // Parse multiple colors
+                    let itemColors = [];
+                    if (item.colorVariant.includes(',')) {
+                        itemColors = item.colorVariant.split(',').map(c => c.trim());
+                    } else if (item.colorVariant.includes('/')) {
+                        itemColors = item.colorVariant.split('/').map(c => c.trim());
+                    } else if (item.colorVariant.includes(' ') && item.colorVariant.startsWith('#')) {
+                        itemColors = item.colorVariant.split(' ').map(c => c.trim()).filter(c => c);
                     } else {
-                        colors.set(item.colorVariant, item.colorVariant);
+                        itemColors = [item.colorVariant];
                     }
+                    
+                    // Add each color to the set
+                    itemColors.forEach(color => {
+                        if (color.startsWith('#')) {
+                            const colorName = getColorName(color);
+                            colors.set(color, colorName);
+                        } else {
+                            colors.set(color, color);
+                        }
+                    });
                 }
                 
                 // Seasons
@@ -1786,8 +1809,13 @@
                 // Size filter
                 if (activeFilters.size && item.size !== activeFilters.size) return false;
 
-                // Color filter
-                if (activeFilters.color && item.colorVariant !== activeFilters.color) return false;
+                // Color filter - match if the item contains this color
+                if (activeFilters.color) {
+                    const itemHasColor = item.colorVariant && 
+                        (item.colorVariant === activeFilters.color || 
+                         item.colorVariant.includes(activeFilters.color));
+                    if (!itemHasColor) return false;
+                }
 
                 // Season filter
                 if (activeFilters.season && item.season !== activeFilters.season) return false;
@@ -2034,27 +2062,62 @@
         function formatColorBadge(colorVariant) {
             if (!colorVariant) return '';
             
-            // Check if it's a hex color code
-            if (colorVariant.startsWith('#')) {
-                return `<div class="color-dot" style="background-color: ${colorVariant}; width: 20px; height: 20px;"></div>`;
+            // Parse multiple colors - could be comma-separated, slash-separated, or space-separated
+            let colors = [];
+            
+            // Check for multiple hex codes or color names
+            if (colorVariant.includes(',')) {
+                colors = colorVariant.split(',').map(c => c.trim());
+            } else if (colorVariant.includes('/')) {
+                colors = colorVariant.split('/').map(c => c.trim());
+            } else if (colorVariant.includes(' ') && colorVariant.startsWith('#')) {
+                // Multiple hex codes separated by space
+                colors = colorVariant.split(' ').map(c => c.trim()).filter(c => c);
+            } else {
+                colors = [colorVariant];
             }
             
-            return '';
+            // Create color dots
+            let colorDotsHTML = '';
+            colors.forEach(color => {
+                if (color.startsWith('#')) {
+                    colorDotsHTML += `<div class="color-dot" style="background-color: ${color}; width: 20px; height: 20px;"></div>`;
+                }
+            });
+            
+            return colorDotsHTML;
         }
 
         function formatColorDisplay(colorVariant) {
             if (!colorVariant) return 'N/A';
             
-            // Check if it's a hex color code
-            if (colorVariant.startsWith('#')) {
-                const colorName = getColorName(colorVariant);
+            // Parse multiple colors
+            let colors = [];
+            
+            if (colorVariant.includes(',')) {
+                colors = colorVariant.split(',').map(c => c.trim());
+            } else if (colorVariant.includes('/')) {
+                colors = colorVariant.split('/').map(c => c.trim());
+            } else if (colorVariant.includes(' ') && colorVariant.startsWith('#')) {
+                colors = colorVariant.split(' ').map(c => c.trim()).filter(c => c);
+            } else {
+                colors = [colorVariant];
+            }
+            
+            // If all colors are hex codes, show dots with names
+            if (colors.every(c => c.startsWith('#'))) {
+                let colorNames = colors.map(c => getColorName(c)).join(', ');
+                let colorDotsHTML = colors.map(c => 
+                    `<div class="color-dot" style="background-color: ${c};"></div>`
+                ).join('');
+                
                 return `<div class="color-bubble">
-                    <div class="color-dot" style="background-color: ${colorVariant};"></div>
-                    <span class="color-name">${colorName}</span>
+                    ${colorDotsHTML}
+                    <span class="color-name">${colorNames}</span>
                 </div>`;
             }
             
-            // If it's just a color name, return it as is
+            // If it's just color names, return as is
             return colorVariant;
         }
 
