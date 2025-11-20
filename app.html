@@ -448,6 +448,34 @@
             color: rgba(255, 255, 255, 0.5);
         }
 
+        .item-badges {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .item-number-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #CCFF00;
+            color: black;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .item-size-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
         .item-condition {
             padding: 6px 12px;
             background: rgba(204, 255, 0, 0.2);
@@ -460,8 +488,10 @@
         .item-details {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 8px;
             margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .item-detail {
@@ -500,6 +530,11 @@
         .color-name {
             font-size: 0.85rem;
             color: rgba(255, 255, 255, 0.8);
+        }
+
+        .item-badges .color-dot {
+            width: 20px;
+            height: 20px;
         }
 
         .loading {
@@ -1129,6 +1164,11 @@
                         </select>
                     </div>
                     <div class="filter-dropdown">
+                        <select class="filter-select" id="filter-number" onchange="applyFilters()">
+                            <option value="">All Numbers (#)</option>
+                        </select>
+                    </div>
+                    <div class="filter-dropdown">
                         <select class="filter-select" id="filter-size" onchange="applyFilters()">
                             <option value="">All Sizes</option>
                         </select>
@@ -1263,6 +1303,7 @@
         let activeFilters = {
             search: '',
             type: '',
+            number: '',
             size: '',
             color: '',
             season: '',
@@ -1590,8 +1631,9 @@
         function populateFilterDropdowns() {
             // Get unique values
             const types = new Set();
+            const numbers = new Set();
             const sizes = new Set();
-            const colors = new Set();
+            const colors = new Map(); // Use Map to store hex -> name mapping
             const seasons = new Set();
 
             allItems.forEach(item => {
@@ -1604,11 +1646,22 @@
                     }
                 }
                 
+                // Item numbers
+                const itemNumber = extractItemNumber(item.uniqueIdentifier);
+                if (itemNumber) numbers.add(itemNumber);
+                
                 // Sizes
                 if (item.size) sizes.add(item.size);
                 
-                // Colors
-                if (item.colorVariant) colors.add(item.colorVariant);
+                // Colors - convert hex to names
+                if (item.colorVariant) {
+                    if (item.colorVariant.startsWith('#')) {
+                        const colorName = getColorName(item.colorVariant);
+                        colors.set(item.colorVariant, colorName);
+                    } else {
+                        colors.set(item.colorVariant, item.colorVariant);
+                    }
+                }
                 
                 // Seasons
                 if (item.season) seasons.add(item.season);
@@ -1616,16 +1669,47 @@
 
             // Populate dropdowns
             populateDropdown('filter-type', Array.from(types).sort());
+            populateDropdown('filter-number', Array.from(numbers).sort((a, b) => parseInt(a) - parseInt(b))); // Numeric sort
             populateDropdown('filter-size', Array.from(sizes).sort());
-            populateDropdown('filter-color', Array.from(colors).sort());
+            populateColorDropdown('filter-color', colors);
             populateDropdown('filter-season', Array.from(seasons).sort((a, b) => b.localeCompare(a))); // Newest first
 
             console.log('📊 Filter options populated:', { 
-                types: types.size, 
+                types: types.size,
+                numbers: numbers.size,
                 sizes: sizes.size, 
                 colors: colors.size, 
                 seasons: seasons.size 
             });
+        }
+
+        function populateColorDropdown(selectId, colorsMap) {
+            const select = document.getElementById(selectId);
+            const currentValue = select.value;
+            
+            // Keep the "All..." option
+            const firstOption = select.options[0];
+            select.innerHTML = '';
+            select.appendChild(firstOption);
+            
+            // Sort by color name
+            const sortedColors = Array.from(colorsMap.entries()).sort((a, b) => 
+                a[1].localeCompare(b[1])
+            );
+            
+            // Add color options with colored dots
+            sortedColors.forEach(([hexValue, colorName]) => {
+                const opt = document.createElement('option');
+                opt.value = hexValue;
+                opt.textContent = colorName;
+                opt.dataset.hex = hexValue;
+                select.appendChild(opt);
+            });
+            
+            // Restore previous selection if still valid
+            if (currentValue && colorsMap.has(currentValue)) {
+                select.value = currentValue;
+            }
         }
 
         function populateDropdown(selectId, options) {
@@ -1641,7 +1725,12 @@
             options.forEach(option => {
                 const opt = document.createElement('option');
                 opt.value = option;
-                opt.textContent = option;
+                // Add # prefix for number filter
+                if (selectId === 'filter-number') {
+                    opt.textContent = '#' + option;
+                } else {
+                    opt.textContent = option;
+                }
                 select.appendChild(opt);
             });
             
@@ -1655,6 +1744,7 @@
             // Get filter values
             activeFilters.search = document.getElementById('search-input').value.toLowerCase();
             activeFilters.type = document.getElementById('filter-type').value;
+            activeFilters.number = document.getElementById('filter-number').value;
             activeFilters.size = document.getElementById('filter-size').value;
             activeFilters.color = document.getElementById('filter-color').value;
             activeFilters.season = document.getElementById('filter-season').value;
@@ -1685,6 +1775,12 @@
                         ? customItemTypes[item.customItemTypeId] 
                         : formatItemType(item.itemType);
                     if (itemType !== activeFilters.type) return false;
+                }
+
+                // Number filter
+                if (activeFilters.number) {
+                    const itemNumber = extractItemNumber(item.uniqueIdentifier);
+                    if (itemNumber !== activeFilters.number) return false;
                 }
 
                 // Size filter
@@ -1760,6 +1856,7 @@
             // Clear all filter inputs
             document.getElementById('search-input').value = '';
             document.getElementById('filter-type').value = '';
+            document.getElementById('filter-number').value = '';
             document.getElementById('filter-size').value = '';
             document.getElementById('filter-color').value = '';
             document.getElementById('filter-season').value = '';
@@ -1775,6 +1872,7 @@
             activeFilters = {
                 search: '',
                 type: '',
+                number: '',
                 size: '',
                 color: '',
                 season: '',
@@ -1803,6 +1901,7 @@
             // Other filter badges
             const filterLabels = {
                 type: 'Type',
+                number: 'Number',
                 size: 'Size',
                 color: 'Color',
                 season: 'Season',
@@ -1813,7 +1912,18 @@
             Object.entries(activeFilters).forEach(([key, value]) => {
                 if (value && key !== 'search') {
                     hasActiveFilters = true;
-                    addFilterBadge(activeFiltersDiv, filterLabels[key], value, key);
+                    
+                    // Format display value
+                    let displayValue = value;
+                    if (key === 'color' && value.startsWith('#')) {
+                        // Convert hex color to name for display
+                        displayValue = getColorName(value);
+                    } else if (key === 'number') {
+                        // Add # prefix for numbers
+                        displayValue = '#' + value;
+                    }
+                    
+                    addFilterBadge(activeFiltersDiv, filterLabels[key], displayValue, key);
                 }
             });
             
@@ -1875,28 +1985,31 @@
             // Create color display
             const colorDisplay = formatColorDisplay(item.colorVariant);
             
+            // Extract item number from unique identifier (e.g., "CUS-#44-L-024" -> "44")
+            const itemNumber = extractItemNumber(item.uniqueIdentifier);
+            
             card.innerHTML = `
                 <div class="item-header">
-                    <div>
+                    <div style="flex: 1;">
                         <div class="item-type">${itemType}</div>
-                        <div class="item-id">#${item.uniqueIdentifier || 'N/A'}</div>
+                        <div class="item-badges">
+                            ${itemNumber ? `<span class="item-number-badge">#${itemNumber}</span>` : ''}
+                            <span class="item-size-badge">${item.size || 'N/A'}</span>
+                            ${formatColorBadge(item.colorVariant)}
+                        </div>
                     </div>
                     <div class="item-condition">${condition}</div>
                 </div>
                 <div class="item-details">
                     <div class="item-detail">
-                        <span class="detail-label">Size</span>
-                        <span class="detail-value">${item.size || 'N/A'}</span>
-                    </div>
-                    <div class="item-detail">
-                        <span class="detail-label">Color</span>
-                        <span class="detail-value">${colorDisplay}</span>
+                        <span class="detail-label">ID</span>
+                        <span class="detail-value" style="font-size: 0.8rem; color: rgba(255,255,255,0.5);">${item.uniqueIdentifier || 'N/A'}</span>
                     </div>
                     <div class="item-detail">
                         <span class="detail-label">Season</span>
                         <span class="detail-value">${item.season || 'N/A'}</span>
                     </div>
-                    <div class="item-detail">
+                    <div class="item-detail" style="grid-column: 1 / -1;">
                         <span class="detail-label">Location</span>
                         <span class="detail-value">${location}</span>
                     </div>
@@ -1904,6 +2017,29 @@
             `;
             
             inventoryList.appendChild(card);
+        }
+
+        function extractItemNumber(uniqueIdentifier) {
+            if (!uniqueIdentifier) return null;
+            
+            // Try to extract number from patterns like:
+            // "CUS-#44-L-024" -> "44"
+            // "#31-M-023" -> "31"
+            // "CUS-31-L-024" -> "31"
+            
+            const match = uniqueIdentifier.match(/#?(\d+)/);
+            return match ? match[1] : null;
+        }
+
+        function formatColorBadge(colorVariant) {
+            if (!colorVariant) return '';
+            
+            // Check if it's a hex color code
+            if (colorVariant.startsWith('#')) {
+                return `<div class="color-dot" style="background-color: ${colorVariant}; width: 20px; height: 20px;"></div>`;
+            }
+            
+            return '';
         }
 
         function formatColorDisplay(colorVariant) {
