@@ -481,6 +481,27 @@
             color: white;
         }
 
+        /* Color Bubble */
+        .color-bubble {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .color-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            flex-shrink: 0;
+        }
+
+        .color-name {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
         .loading {
             text-align: center;
             padding: 60px 20px;
@@ -700,6 +721,226 @@
             margin-top: 8px;
         }
 
+        /* Filter Bar */
+        .filter-bar {
+            background: rgba(26, 26, 26, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(204, 255, 0, 0.2);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .filter-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .clear-filters-btn {
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid rgba(204, 255, 0, 0.3);
+            color: #CCFF00;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .clear-filters-btn:hover {
+            background: rgba(204, 255, 0, 0.1);
+            border-color: #CCFF00;
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 20px 14px 50px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(204, 255, 0, 0.3);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #CCFF00;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(204, 255, 0, 0.1);
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #CCFF00;
+            font-size: 1.2rem;
+            pointer-events: none;
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .filter-dropdown {
+            position: relative;
+        }
+
+        .filter-select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(204, 255, 0, 0.3);
+            border-radius: 10px;
+            color: white;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23CCFF00' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 36px;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #CCFF00;
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .filter-select option {
+            background: #1A1A1A;
+            color: white;
+            padding: 10px;
+        }
+
+        .quick-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .quick-filter-chip {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(204, 255, 0, 0.3);
+            border-radius: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .quick-filter-chip:hover {
+            background: rgba(204, 255, 0, 0.1);
+            border-color: #CCFF00;
+            color: white;
+        }
+
+        .quick-filter-chip.active {
+            background: #CCFF00;
+            color: black;
+            border-color: #CCFF00;
+            font-weight: 600;
+        }
+
+        .quick-filter-chip .emoji {
+            font-size: 1rem;
+        }
+
+        .active-filters {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .active-filter-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: rgba(204, 255, 0, 0.2);
+            border: 1px solid rgba(204, 255, 0, 0.4);
+            border-radius: 16px;
+            color: #CCFF00;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .remove-filter {
+            background: none;
+            border: none;
+            color: #CCFF00;
+            cursor: pointer;
+            font-size: 1.1rem;
+            line-height: 1;
+            padding: 0;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .remove-filter:hover {
+            background: rgba(204, 255, 0, 0.3);
+        }
+
+        .filter-results {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            margin-top: 12px;
+        }
+
+        .filter-results strong {
+            color: #CCFF00;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .login-container {
@@ -861,6 +1102,93 @@
                 <h2>Inventory</h2>
             </div>
 
+            <!-- Filter Bar -->
+            <div class="filter-bar" id="filter-bar" style="display: none;">
+                <div class="filter-header">
+                    <div class="filter-title">🔍 Filter Items</div>
+                    <button class="clear-filters-btn" onclick="clearAllFilters()">Clear All</button>
+                </div>
+
+                <!-- Search Box -->
+                <div class="search-box">
+                    <span class="search-icon">🔎</span>
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        id="search-input"
+                        placeholder="Search by ID, type, or color..."
+                        oninput="applyFilters()"
+                    >
+                </div>
+
+                <!-- Dropdown Filters -->
+                <div class="filters-grid">
+                    <div class="filter-dropdown">
+                        <select class="filter-select" id="filter-type" onchange="applyFilters()">
+                            <option value="">All Item Types</option>
+                        </select>
+                    </div>
+                    <div class="filter-dropdown">
+                        <select class="filter-select" id="filter-size" onchange="applyFilters()">
+                            <option value="">All Sizes</option>
+                        </select>
+                    </div>
+                    <div class="filter-dropdown">
+                        <select class="filter-select" id="filter-color" onchange="applyFilters()">
+                            <option value="">All Colors</option>
+                        </select>
+                    </div>
+                    <div class="filter-dropdown">
+                        <select class="filter-select" id="filter-season" onchange="applyFilters()">
+                            <option value="">All Seasons</option>
+                        </select>
+                    </div>
+                    <div class="filter-dropdown">
+                        <select class="filter-select" id="filter-condition" onchange="applyFilters()">
+                            <option value="">All Conditions</option>
+                            <option value="new">✨ New</option>
+                            <option value="excellent">💚 Excellent</option>
+                            <option value="good">👍 Good</option>
+                            <option value="fair">⚠️ Fair</option>
+                            <option value="poor">🔴 Poor</option>
+                            <option value="damaged">💔 Damaged</option>
+                            <option value="beyond_repair">❌ Beyond Repair</option>
+                        </select>
+                    </div>
+                    <div class="filter-dropdown">
+                        <select class="filter-select" id="filter-location" onchange="applyFilters()">
+                            <option value="">All Locations</option>
+                            <option value="storage">🏠 Storage</option>
+                            <option value="with_player">👤 With Player</option>
+                            <option value="being_washed">💧 Being Washed</option>
+                            <option value="being_repaired">🔧 Being Repaired</option>
+                            <option value="in_transit">🚚 In Transit</option>
+                            <option value="lost">❌ Lost</option>
+                            <option value="disposed">🗑️ Disposed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Quick Filters -->
+                <div class="quick-filters">
+                    <div class="quick-filter-chip" onclick="toggleQuickFilter('new')">
+                        <span class="emoji">✨</span> New Items
+                    </div>
+                    <div class="quick-filter-chip" onclick="toggleQuickFilter('storage')">
+                        <span class="emoji">🏠</span> In Storage
+                    </div>
+                    <div class="quick-filter-chip" onclick="toggleQuickFilter('with_player')">
+                        <span class="emoji">👤</span> Assigned
+                    </div>
+                </div>
+
+                <!-- Active Filters Display -->
+                <div id="active-filters" class="active-filters" style="display: none;"></div>
+
+                <!-- Filter Results Counter -->
+                <div id="filter-results" class="filter-results"></div>
+            </div>
+
             <div id="loading-inventory" class="loading">
                 <div class="spinner"></div>
                 <div class="loading-text">Loading your inventory...</div>
@@ -882,7 +1210,21 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
     <script>
-        // Firebase Configuration
+        // ============================================
+        // FIREBASE CONFIGURATION
+        // ============================================
+        // NOTE: These API keys are PUBLIC by design and safe to expose!
+        // - Firebase web API keys are meant to be visible in client code
+        // - Real security comes from Firestore Security Rules (server-side)
+        // - The API key only identifies your Firebase project
+        // 
+        // 🔒 TO SECURE FURTHER (Recommended):
+        // 1. Go to Google Cloud Console: https://console.cloud.google.com/apis/credentials?project=teamwalletx
+        // 2. Find "Browser key (auto created by Firebase)"
+        // 3. Add domain restrictions: https://teamkitx.app/* and http://localhost/*
+        // 4. Now the key only works on your domain!
+        // ============================================
+        
         const firebaseConfig = {
             apiKey: "AIzaSyDkz9qUU4aAg_W8LrRjpElHEoS5pUxKMT8",
             authDomain: "teamwalletx.firebaseapp.com",
@@ -917,6 +1259,16 @@
         let userTeamId = null;
         let customItemTypes = {}; // Cache for custom item types
         let teamMembers = []; // Store team members
+        let allItems = []; // Store all inventory items for filtering
+        let activeFilters = {
+            search: '',
+            type: '',
+            size: '',
+            color: '',
+            season: '',
+            condition: '',
+            location: ''
+        };
 
         // ============ AUTH FUNCTIONS ============
 
@@ -1115,12 +1467,18 @@
                     return;
                 }
 
+                // Store all items
+                allItems = [];
                 let totalItems = 0;
                 let availableItems = 0;
                 let assignedItems = 0;
 
                 itemsSnapshot.forEach(doc => {
-                    const item = doc.data();
+                    const item = {
+                        id: doc.id,
+                        ...doc.data()
+                    };
+                    allItems.push(item);
                     totalItems++;
                     
                     // Check if item is with player (assigned)
@@ -1129,9 +1487,16 @@
                     } else if (item.currentLocation === 'storage') {
                         availableItems++;
                     }
-
-                    renderInventoryCard(item);
                 });
+
+                // Populate filter dropdowns
+                populateFilterDropdowns();
+
+                // Show filter bar
+                document.getElementById('filter-bar').style.display = 'block';
+
+                // Render all items initially
+                renderFilteredItems(allItems);
 
                 updateStats(totalItems, availableItems, assignedItems);
                 loadingDiv.style.display = 'none';
@@ -1220,6 +1585,278 @@
             }
         });
 
+        // ============ FILTER FUNCTIONS ============
+
+        function populateFilterDropdowns() {
+            // Get unique values
+            const types = new Set();
+            const sizes = new Set();
+            const colors = new Set();
+            const seasons = new Set();
+
+            allItems.forEach(item => {
+                // Item types
+                if (item.itemType) {
+                    if (item.itemType === 'custom' && item.customItemTypeId && customItemTypes[item.customItemTypeId]) {
+                        types.add(customItemTypes[item.customItemTypeId]);
+                    } else {
+                        types.add(formatItemType(item.itemType));
+                    }
+                }
+                
+                // Sizes
+                if (item.size) sizes.add(item.size);
+                
+                // Colors
+                if (item.colorVariant) colors.add(item.colorVariant);
+                
+                // Seasons
+                if (item.season) seasons.add(item.season);
+            });
+
+            // Populate dropdowns
+            populateDropdown('filter-type', Array.from(types).sort());
+            populateDropdown('filter-size', Array.from(sizes).sort());
+            populateDropdown('filter-color', Array.from(colors).sort());
+            populateDropdown('filter-season', Array.from(seasons).sort((a, b) => b.localeCompare(a))); // Newest first
+
+            console.log('📊 Filter options populated:', { 
+                types: types.size, 
+                sizes: sizes.size, 
+                colors: colors.size, 
+                seasons: seasons.size 
+            });
+        }
+
+        function populateDropdown(selectId, options) {
+            const select = document.getElementById(selectId);
+            const currentValue = select.value;
+            
+            // Keep the "All..." option
+            const firstOption = select.options[0];
+            select.innerHTML = '';
+            select.appendChild(firstOption);
+            
+            // Add options
+            options.forEach(option => {
+                const opt = document.createElement('option');
+                opt.value = option;
+                opt.textContent = option;
+                select.appendChild(opt);
+            });
+            
+            // Restore previous selection if still valid
+            if (currentValue && options.includes(currentValue)) {
+                select.value = currentValue;
+            }
+        }
+
+        function applyFilters() {
+            // Get filter values
+            activeFilters.search = document.getElementById('search-input').value.toLowerCase();
+            activeFilters.type = document.getElementById('filter-type').value;
+            activeFilters.size = document.getElementById('filter-size').value;
+            activeFilters.color = document.getElementById('filter-color').value;
+            activeFilters.season = document.getElementById('filter-season').value;
+            activeFilters.condition = document.getElementById('filter-condition').value;
+            activeFilters.location = document.getElementById('filter-location').value;
+
+            // Filter items
+            let filteredItems = allItems.filter(item => {
+                // Search filter
+                if (activeFilters.search) {
+                    const searchTerm = activeFilters.search;
+                    const itemType = item.itemType === 'custom' && item.customItemTypeId && customItemTypes[item.customItemTypeId] 
+                        ? customItemTypes[item.customItemTypeId] 
+                        : formatItemType(item.itemType);
+                    
+                    const matchesSearch = 
+                        (item.uniqueIdentifier && item.uniqueIdentifier.toLowerCase().includes(searchTerm)) ||
+                        (itemType && itemType.toLowerCase().includes(searchTerm)) ||
+                        (item.colorVariant && item.colorVariant.toLowerCase().includes(searchTerm)) ||
+                        (item.size && item.size.toLowerCase().includes(searchTerm));
+                    
+                    if (!matchesSearch) return false;
+                }
+
+                // Type filter
+                if (activeFilters.type) {
+                    const itemType = item.itemType === 'custom' && item.customItemTypeId && customItemTypes[item.customItemTypeId] 
+                        ? customItemTypes[item.customItemTypeId] 
+                        : formatItemType(item.itemType);
+                    if (itemType !== activeFilters.type) return false;
+                }
+
+                // Size filter
+                if (activeFilters.size && item.size !== activeFilters.size) return false;
+
+                // Color filter
+                if (activeFilters.color && item.colorVariant !== activeFilters.color) return false;
+
+                // Season filter
+                if (activeFilters.season && item.season !== activeFilters.season) return false;
+
+                // Condition filter
+                if (activeFilters.condition && item.condition !== activeFilters.condition) return false;
+
+                // Location filter
+                if (activeFilters.location && item.currentLocation !== activeFilters.location) return false;
+
+                return true;
+            });
+
+            renderFilteredItems(filteredItems);
+            updateActiveFilters();
+            updateFilterResults(filteredItems.length, allItems.length);
+        }
+
+        function renderFilteredItems(items) {
+            const inventoryList = document.getElementById('inventory-list');
+            const emptyDiv = document.getElementById('empty-inventory');
+            
+            inventoryList.innerHTML = '';
+            
+            if (items.length === 0) {
+                emptyDiv.style.display = 'block';
+                emptyDiv.querySelector('.empty-text').textContent = 'No items match your filters';
+                emptyDiv.querySelector('.empty-subtext').textContent = 'Try adjusting your search criteria';
+                return;
+            }
+            
+            emptyDiv.style.display = 'none';
+            items.forEach(item => renderInventoryCard(item));
+        }
+
+        function toggleQuickFilter(filterType) {
+            const chip = event.target.closest('.quick-filter-chip');
+            
+            // Toggle active state
+            if (chip.classList.contains('active')) {
+                chip.classList.remove('active');
+                
+                // Clear the corresponding filter
+                if (filterType === 'new') {
+                    document.getElementById('filter-condition').value = '';
+                } else {
+                    document.getElementById('filter-location').value = '';
+                }
+            } else {
+                // Remove active from all quick filters
+                document.querySelectorAll('.quick-filter-chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                
+                // Apply the filter
+                if (filterType === 'new') {
+                    document.getElementById('filter-condition').value = 'new';
+                } else {
+                    document.getElementById('filter-location').value = filterType;
+                }
+            }
+            
+            applyFilters();
+        }
+
+        function clearAllFilters() {
+            // Clear all filter inputs
+            document.getElementById('search-input').value = '';
+            document.getElementById('filter-type').value = '';
+            document.getElementById('filter-size').value = '';
+            document.getElementById('filter-color').value = '';
+            document.getElementById('filter-season').value = '';
+            document.getElementById('filter-condition').value = '';
+            document.getElementById('filter-location').value = '';
+            
+            // Clear quick filters
+            document.querySelectorAll('.quick-filter-chip').forEach(chip => {
+                chip.classList.remove('active');
+            });
+            
+            // Reset active filters
+            activeFilters = {
+                search: '',
+                type: '',
+                size: '',
+                color: '',
+                season: '',
+                condition: '',
+                location: ''
+            };
+            
+            // Show all items
+            renderFilteredItems(allItems);
+            updateActiveFilters();
+            updateFilterResults(allItems.length, allItems.length);
+        }
+
+        function updateActiveFilters() {
+            const activeFiltersDiv = document.getElementById('active-filters');
+            activeFiltersDiv.innerHTML = '';
+            
+            let hasActiveFilters = false;
+            
+            // Search badge
+            if (activeFilters.search) {
+                hasActiveFilters = true;
+                addFilterBadge(activeFiltersDiv, 'Search', `"${activeFilters.search}"`, 'search');
+            }
+            
+            // Other filter badges
+            const filterLabels = {
+                type: 'Type',
+                size: 'Size',
+                color: 'Color',
+                season: 'Season',
+                condition: 'Condition',
+                location: 'Location'
+            };
+            
+            Object.entries(activeFilters).forEach(([key, value]) => {
+                if (value && key !== 'search') {
+                    hasActiveFilters = true;
+                    addFilterBadge(activeFiltersDiv, filterLabels[key], value, key);
+                }
+            });
+            
+            activeFiltersDiv.style.display = hasActiveFilters ? 'flex' : 'none';
+        }
+
+        function addFilterBadge(container, label, value, filterKey) {
+            const badge = document.createElement('div');
+            badge.className = 'active-filter-badge';
+            badge.innerHTML = `
+                ${label}: ${value}
+                <button class="remove-filter" onclick="removeFilter('${filterKey}')">×</button>
+            `;
+            container.appendChild(badge);
+        }
+
+        function removeFilter(filterKey) {
+            if (filterKey === 'search') {
+                document.getElementById('search-input').value = '';
+            } else {
+                document.getElementById(`filter-${filterKey}`).value = '';
+            }
+            
+            // Clear quick filter if it matches
+            if (filterKey === 'condition' || filterKey === 'location') {
+                document.querySelectorAll('.quick-filter-chip').forEach(chip => {
+                    chip.classList.remove('active');
+                });
+            }
+            
+            applyFilters();
+        }
+
+        function updateFilterResults(filtered, total) {
+            const resultsDiv = document.getElementById('filter-results');
+            
+            if (filtered === total) {
+                resultsDiv.innerHTML = `Showing <strong>all ${total}</strong> items`;
+            } else {
+                resultsDiv.innerHTML = `Showing <strong>${filtered}</strong> of <strong>${total}</strong> items`;
+            }
+        }
+
         function renderInventoryCard(item) {
             const inventoryList = document.getElementById('inventory-list');
             
@@ -1234,6 +1871,9 @@
             
             const condition = formatCondition(item.condition);
             const location = formatLocation(item.currentLocation);
+            
+            // Create color display
+            const colorDisplay = formatColorDisplay(item.colorVariant);
             
             card.innerHTML = `
                 <div class="item-header">
@@ -1250,7 +1890,7 @@
                     </div>
                     <div class="item-detail">
                         <span class="detail-label">Color</span>
-                        <span class="detail-value">${item.colorVariant || 'N/A'}</span>
+                        <span class="detail-value">${colorDisplay}</span>
                     </div>
                     <div class="item-detail">
                         <span class="detail-label">Season</span>
@@ -1264,6 +1904,79 @@
             `;
             
             inventoryList.appendChild(card);
+        }
+
+        function formatColorDisplay(colorVariant) {
+            if (!colorVariant) return 'N/A';
+            
+            // Check if it's a hex color code
+            if (colorVariant.startsWith('#')) {
+                const colorName = getColorName(colorVariant);
+                return `<div class="color-bubble">
+                    <div class="color-dot" style="background-color: ${colorVariant};"></div>
+                    <span class="color-name">${colorName}</span>
+                </div>`;
+            }
+            
+            // If it's just a color name, return it as is
+            return colorVariant;
+        }
+
+        function getColorName(hexColor) {
+            // Common color names mapping
+            const colorNames = {
+                '#000000': 'Black',
+                '#FFFFFF': 'White',
+                '#FF0000': 'Red',
+                '#00FF00': 'Green',
+                '#0000FF': 'Blue',
+                '#FFFF00': 'Yellow',
+                '#FF00FF': 'Magenta',
+                '#00FFFF': 'Cyan',
+                '#FFA500': 'Orange',
+                '#800080': 'Purple',
+                '#FFC0CB': 'Pink',
+                '#A52A2A': 'Brown',
+                '#808080': 'Gray',
+                '#C0C0C0': 'Silver',
+                '#FFD700': 'Gold',
+                '#000080': 'Navy',
+                '#008080': 'Teal',
+                '#CCFF00': 'Lime'
+            };
+            
+            const upperHex = hexColor.toUpperCase();
+            
+            // Check for exact match
+            if (colorNames[upperHex]) {
+                return colorNames[upperHex];
+            }
+            
+            // For other colors, try to determine based on RGB values
+            const hex = upperHex.replace('#', '');
+            const r = parseInt(hex.substr(0, 2), 16);
+            const g = parseInt(hex.substr(2, 2), 16);
+            const b = parseInt(hex.substr(4, 2), 16);
+            
+            // Simple color categorization
+            if (r === 0 && g === 0 && b === 0) return 'Black';
+            if (r === 255 && g === 255 && b === 255) return 'White';
+            if (r > 200 && g < 100 && b < 100) return 'Red';
+            if (r < 100 && g > 200 && b < 100) return 'Green';
+            if (r < 100 && g < 100 && b > 200) return 'Blue';
+            if (r > 200 && g > 200 && b < 100) return 'Yellow';
+            if (r > 200 && g > 100 && b < 100) return 'Orange';
+            if (r > 100 && g < 100 && b > 200) return 'Purple';
+            if (r > 200 && g < 100 && b > 200) return 'Pink';
+            if (r < 100 && g > 100 && b > 200) return 'Cyan';
+            if (Math.abs(r - g) < 30 && Math.abs(g - b) < 30 && Math.abs(r - b) < 30) {
+                if (r < 100) return 'Dark Gray';
+                if (r > 180) return 'Light Gray';
+                return 'Gray';
+            }
+            
+            // Default: return hex code without #
+            return hexColor;
         }
 
         function updateStats(total, available, assigned) {
