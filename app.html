@@ -306,6 +306,160 @@
             color: rgba(255, 255, 255, 0.6);
         }
 
+        .premium-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #CCFF00 0%, #99CC00 100%);
+            color: #1a1a1a;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 8px;
+            box-shadow: 0 2px 8px rgba(204, 255, 0, 0.3);
+        }
+
+        .free-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 8px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .btn-create {
+            background: linear-gradient(135deg, #CCFF00 0%, #99CC00 100%);
+            color: #1a1a1a;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-create:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(204, 255, 0, 0.4);
+        }
+
+        .btn-create:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.3);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #CCFF00;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(204, 255, 0, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            color: white;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #CCFF00;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .limit-warning {
+            background: rgba(255, 165, 0, 0.1);
+            border: 1px solid rgba(255, 165, 0, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 20px;
+            color: #FFA500;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .limit-warning strong {
+            color: #FFD700;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #CCFF00 0%, #99CC00 100%);
+            color: #1a1a1a;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .btn-submit:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(204, 255, 0, 0.4);
+        }
+
+        .btn-submit:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.3);
+            cursor: not-allowed;
+        }
+
         .btn-logout {
             padding: 10px 20px;
             background: transparent;
@@ -1038,6 +1192,181 @@
         </div>
     </div>
 
+    <!-- Add Item Modal -->
+    <div id="add-item-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>➕ Add New Item</h2>
+                <button class="modal-close" onclick="closeAddItemModal()">×</button>
+            </div>
+            <div id="item-limit-warning" class="limit-warning" style="display: none;">
+                <span>⚠️</span>
+                <div>
+                    <strong>Free Tier Limit Reached!</strong>
+                    <p>You have <span id="current-item-count">0</span> items. Free tier allows up to 50 items. Upgrade to Premium for unlimited items.</p>
+                </div>
+            </div>
+            <form id="add-item-form" onsubmit="handleAddItem(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="item-type">Item Type</label>
+                        <select id="item-type" required>
+                            <option value="">Select type...</option>
+                            <option value="jersey">👕 Jersey</option>
+                            <option value="training_jersey">🏃 Training Jersey</option>
+                            <option value="shorts">🩳 Shorts</option>
+                            <option value="socks">🧦 Socks</option>
+                            <option value="goalkeeper_jersey">🥅 Goalkeeper Jersey</option>
+                            <option value="goalkeeper_gloves">🧤 Goalkeeper Gloves</option>
+                            <option value="training_bib">🟦 Training Bib</option>
+                            <option value="ball">⚽ Ball</option>
+                            <option value="cone">🔶 Cone</option>
+                            <option value="medical_kit">🏥 Medical Kit</option>
+                            <option value="boots">👟 Boots</option>
+                            <option value="bag">🎒 Bag</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="item-number">Number (optional)</label>
+                        <input type="number" id="item-number" placeholder="e.g., 10">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="item-size">Size</label>
+                        <select id="item-size" required>
+                            <option value="one_size">One Size</option>
+                            <option value="XS">XS</option>
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="item-color">Color</label>
+                        <select id="item-color" required>
+                            <option value="#FF0000">🔴 Red</option>
+                            <option value="#0000FF">🔵 Blue</option>
+                            <option value="#00FF00">🟢 Green</option>
+                            <option value="#FFFF00">🟡 Yellow</option>
+                            <option value="#000000">⚫ Black</option>
+                            <option value="#FFFFFF">⚪ White</option>
+                            <option value="#FFA500">🟠 Orange</option>
+                            <option value="#800080">🟣 Purple</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="item-condition">Condition</label>
+                        <select id="item-condition" required>
+                            <option value="new">✨ New</option>
+                            <option value="excellent">💚 Excellent</option>
+                            <option value="good">👍 Good</option>
+                            <option value="fair">⚠️ Fair</option>
+                            <option value="poor">🔴 Poor</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="item-season">Season (optional)</label>
+                        <input type="text" id="item-season" placeholder="e.g., 2024/25">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="item-notes">Notes (optional)</label>
+                    <textarea id="item-notes" placeholder="Any additional information..."></textarea>
+                </div>
+                <button type="submit" class="btn-submit" id="submit-item-btn">Add Item</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Member Modal -->
+    <div id="add-member-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>👤 Add Team Member</h2>
+                <button class="modal-close" onclick="closeAddMemberModal()">×</button>
+            </div>
+            <div id="member-limit-warning" class="limit-warning" style="display: none;">
+                <span>⚠️</span>
+                <div>
+                    <strong>Free Tier Limit Reached!</strong>
+                    <p>You have <span id="current-member-count">0</span> members. Free tier allows up to 15 members. Upgrade to Premium for unlimited members.</p>
+                </div>
+            </div>
+            <form id="add-member-form" onsubmit="handleAddMember(event)">
+                <div class="form-group">
+                    <label for="member-name">Full Name</label>
+                    <input type="text" id="member-name" required placeholder="Enter member name">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="member-email">Email</label>
+                        <input type="email" id="member-email" required placeholder="member@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="member-role">Role</label>
+                        <select id="member-role" required>
+                            <option value="player">🏃 Player</option>
+                            <option value="coach">👨‍🏫 Coach</option>
+                            <option value="assistant">🤝 Assistant</option>
+                            <option value="manager">💼 Manager</option>
+                            <option value="physio">🏥 Physio</option>
+                            <option value="doctor">⚕️ Doctor</option>
+                            <option value="analyst">📊 Analyst</option>
+                            <option value="nutritionist">🥗 Nutritionist</option>
+                            <option value="admin">⚙️ Admin</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="member-number">Player Number (optional)</label>
+                    <input type="number" id="member-number" placeholder="e.g., 10">
+                </div>
+                <button type="submit" class="btn-submit" id="submit-member-btn">Add Member</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Create Assignment Modal -->
+    <div id="create-assignment-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🔄 Create Assignment</h2>
+                <button class="modal-close" onclick="closeCreateAssignmentModal()">×</button>
+            </div>
+            <div id="assignment-limit-warning" class="limit-warning" style="display: none;">
+                <span>⚠️</span>
+                <div>
+                    <strong>Free Tier Limit Reached!</strong>
+                    <p>You have <span id="current-assignment-count">0</span> assignments. Free tier allows up to 10 active assignments. Upgrade to Premium for unlimited assignments.</p>
+                </div>
+            </div>
+            <form id="create-assignment-form" onsubmit="handleCreateAssignment(event)">
+                <div class="form-group">
+                    <label for="assignment-item">Select Item</label>
+                    <select id="assignment-item" required>
+                        <option value="">Choose an item...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="assignment-member">Assign To</label>
+                    <select id="assignment-member" required>
+                        <option value="">Choose a member...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="assignment-notes">Notes (optional)</label>
+                    <textarea id="assignment-notes" placeholder="Reason for assignment or additional info..."></textarea>
+                </div>
+                <button type="submit" class="btn-submit" id="submit-assignment-btn">Create Assignment</button>
+            </form>
+        </div>
+    </div>
+
     <!-- ============ LOGIN SCREEN ============ -->
     <div id="login-screen">
         <div class="login-container">
@@ -1106,7 +1435,10 @@
                             <div class="user-avatar" id="user-avatar">U</div>
                             <div class="user-details">
                                 <div class="user-name" id="user-name">Loading...</div>
-                                <div class="user-email" id="user-email">Loading...</div>
+                                <div class="user-email">
+                                    <span id="user-email">Loading...</span>
+                                    <span id="premium-badge"></span>
+                                </div>
                             </div>
                         </div>
                         <button class="btn-logout" id="logout-btn">Logout</button>
@@ -1138,6 +1470,22 @@
                     <div class="stat-value" id="total-members">0</div>
                     <div class="stat-label">Team Members</div>
                 </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn-create" id="btn-add-item" onclick="showAddItemModal()">
+                    <span>➕</span>
+                    <span>Add New Item</span>
+                </button>
+                <button class="btn-create" id="btn-add-member" onclick="showAddMemberModal()">
+                    <span>👤</span>
+                    <span>Add Team Member</span>
+                </button>
+                <button class="btn-create" id="btn-create-assignment" onclick="showCreateAssignmentModal()">
+                    <span>🔄</span>
+                    <span>Create Assignment</span>
+                </button>
             </div>
 
             <!-- Inventory Section -->
@@ -1332,6 +1680,17 @@
             location: ''
         };
 
+        // Subscription & Premium Status
+        let isPremium = false;
+        let currentItemCount = 0;
+        let currentMemberCount = 0;
+        let currentAssignmentCount = 0;
+        const FREE_TIER_LIMITS = {
+            items: 50,
+            members: 15,
+            assignments: 10
+        };
+
         // ============ AUTH FUNCTIONS ============
 
         // Check Auth State
@@ -1412,6 +1771,9 @@
                     // Set avatar initial
                     const initial = (userData.displayName || currentUser.email)[0].toUpperCase();
                     document.getElementById('user-avatar').textContent = initial;
+
+                    // Check Premium Status
+                    await checkPremiumStatus(userData);
 
                     // Get user's team (check both new teamIds array and legacy teamId field)
                     console.log('🏆 User teamIds:', userData.teamIds);
@@ -1564,6 +1926,9 @@
                 updateStats(totalItems, availableItems, assignedItems);
                 loadingDiv.style.display = 'none';
 
+                // Update limits after loading inventory
+                checkAndUpdateLimits();
+
             } catch (error) {
                 console.error('❌ Error loading inventory:', error);
                 loadingDiv.style.display = 'none';
@@ -1592,6 +1957,9 @@
                 const memberCount = teamMembers.length;
                 document.getElementById('total-members').textContent = memberCount;
                 console.log('👥 Found', memberCount, 'members:', teamMembers);
+
+                // Update limits after loading members
+                checkAndUpdateLimits();
             } catch (error) {
                 console.error('❌ Error loading members:', error);
             }
@@ -2349,6 +2717,414 @@
                 alert('Error: ' + error.message);
             }
         });
+
+        // ============ PREMIUM & SUBSCRIPTION FUNCTIONS ============
+
+        async function checkPremiumStatus(userData) {
+            try {
+                console.log('💎 Checking premium status...');
+                
+                // Check if user has manual premium access
+                if (userData.hasPremiumAccess === true) {
+                    isPremium = true;
+                    console.log('✅ Manual premium access granted');
+                    updatePremiumUI(true);
+                    return;
+                }
+
+                // Check subscription from userTeamId in teams/{teamId}/members/{userId}
+                if (userTeamId && currentUser) {
+                    const memberDoc = await db.collection('teams')
+                        .doc(userTeamId)
+                        .collection('members')
+                        .doc(currentUser.uid)
+                        .get();
+                    
+                    if (memberDoc.exists) {
+                        const memberData = memberDoc.data();
+                        console.log('👤 Member data:', memberData);
+                        
+                        if (memberData.hasPremiumAccess === true) {
+                            isPremium = true;
+                            console.log('✅ Premium access from team member document');
+                            updatePremiumUI(true);
+                            return;
+                        }
+                    }
+                }
+
+                // Check subscription tier
+                const subscriptionDoc = await db.collection('subscriptions')
+                    .doc(currentUser.uid)
+                    .get();
+                
+                if (subscriptionDoc.exists) {
+                    const subData = subscriptionDoc.data();
+                    if (subData.tier === 'premium' && subData.isActive) {
+                        isPremium = true;
+                        console.log('✅ Active premium subscription found');
+                        updatePremiumUI(true);
+                        return;
+                    }
+                }
+
+                // Default to free tier
+                isPremium = false;
+                console.log('📦 Free tier user');
+                updatePremiumUI(false);
+                
+            } catch (error) {
+                console.error('❌ Error checking premium status:', error);
+                isPremium = false;
+                updatePremiumUI(false);
+            }
+        }
+
+        function updatePremiumUI(premium) {
+            const badge = document.getElementById('premium-badge');
+            if (premium) {
+                badge.innerHTML = '<span class="premium-badge">👑 PREMIUM</span>';
+            } else {
+                badge.innerHTML = '<span class="free-badge">FREE</span>';
+            }
+        }
+
+        function checkAndUpdateLimits() {
+            // Update counts
+            currentItemCount = allItems.length;
+            currentMemberCount = teamMembers.length;
+            currentAssignmentCount = allItems.filter(item => item.assignedTo).length;
+
+            console.log(`📊 Current counts: ${currentItemCount} items, ${currentMemberCount} members, ${currentAssignmentCount} assignments`);
+
+            // Update buttons
+            const btnAddItem = document.getElementById('btn-add-item');
+            const btnAddMember = document.getElementById('btn-add-member');
+            const btnCreateAssignment = document.getElementById('btn-create-assignment');
+
+            if (!isPremium) {
+                // Check item limit
+                if (currentItemCount >= FREE_TIER_LIMITS.items) {
+                    btnAddItem.disabled = true;
+                    btnAddItem.title = `Free tier limit: ${FREE_TIER_LIMITS.items} items`;
+                } else {
+                    btnAddItem.disabled = false;
+                    btnAddItem.title = '';
+                }
+
+                // Check member limit
+                if (currentMemberCount >= FREE_TIER_LIMITS.members) {
+                    btnAddMember.disabled = true;
+                    btnAddMember.title = `Free tier limit: ${FREE_TIER_LIMITS.members} members`;
+                } else {
+                    btnAddMember.disabled = false;
+                    btnAddMember.title = '';
+                }
+
+                // Check assignment limit
+                if (currentAssignmentCount >= FREE_TIER_LIMITS.assignments) {
+                    btnCreateAssignment.disabled = true;
+                    btnCreateAssignment.title = `Free tier limit: ${FREE_TIER_LIMITS.assignments} assignments`;
+                } else {
+                    btnCreateAssignment.disabled = false;
+                    btnCreateAssignment.title = '';
+                }
+            } else {
+                // Premium: enable all
+                btnAddItem.disabled = false;
+                btnAddMember.disabled = false;
+                btnCreateAssignment.disabled = false;
+            }
+        }
+
+        // ============ MODAL FUNCTIONS ============
+
+        function showAddItemModal() {
+            // Check limits
+            if (!isPremium && currentItemCount >= FREE_TIER_LIMITS.items) {
+                document.getElementById('item-limit-warning').style.display = 'flex';
+                document.getElementById('current-item-count').textContent = currentItemCount;
+                document.getElementById('submit-item-btn').disabled = true;
+            } else {
+                document.getElementById('item-limit-warning').style.display = 'none';
+                document.getElementById('submit-item-btn').disabled = false;
+            }
+            document.getElementById('add-item-modal').classList.add('active');
+        }
+
+        function closeAddItemModal() {
+            document.getElementById('add-item-modal').classList.remove('active');
+            document.getElementById('add-item-form').reset();
+        }
+
+        function showAddMemberModal() {
+            // Check limits
+            if (!isPremium && currentMemberCount >= FREE_TIER_LIMITS.members) {
+                document.getElementById('member-limit-warning').style.display = 'flex';
+                document.getElementById('current-member-count').textContent = currentMemberCount;
+                document.getElementById('submit-member-btn').disabled = true;
+            } else {
+                document.getElementById('member-limit-warning').style.display = 'none';
+                document.getElementById('submit-member-btn').disabled = false;
+            }
+            document.getElementById('add-member-modal').classList.add('active');
+        }
+
+        function closeAddMemberModal() {
+            document.getElementById('add-member-modal').classList.remove('active');
+            document.getElementById('add-member-form').reset();
+        }
+
+        function showCreateAssignmentModal() {
+            // Check limits
+            if (!isPremium && currentAssignmentCount >= FREE_TIER_LIMITS.assignments) {
+                document.getElementById('assignment-limit-warning').style.display = 'flex';
+                document.getElementById('current-assignment-count').textContent = currentAssignmentCount;
+                document.getElementById('submit-assignment-btn').disabled = true;
+            } else {
+                document.getElementById('assignment-limit-warning').style.display = 'none';
+                document.getElementById('submit-assignment-btn').disabled = false;
+            }
+
+            // Populate item dropdown (only available items)
+            const itemSelect = document.getElementById('assignment-item');
+            itemSelect.innerHTML = '<option value="">Choose an item...</option>';
+            allItems.filter(item => !item.assignedTo).forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.id;
+                option.textContent = `${getDisplayName(item)} - ${item.size || 'N/A'}`;
+                itemSelect.appendChild(option);
+            });
+
+            // Populate member dropdown
+            const memberSelect = document.getElementById('assignment-member');
+            memberSelect.innerHTML = '<option value="">Choose a member...</option>';
+            teamMembers.forEach(member => {
+                const option = document.createElement('option');
+                option.value = member.id;
+                option.textContent = member.displayName || member.email;
+                memberSelect.appendChild(option);
+            });
+
+            document.getElementById('create-assignment-modal').classList.add('active');
+        }
+
+        function closeCreateAssignmentModal() {
+            document.getElementById('create-assignment-modal').classList.remove('active');
+            document.getElementById('create-assignment-form').reset();
+        }
+
+        // ============ FORM SUBMISSION HANDLERS ============
+
+        async function handleAddItem(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.getElementById('submit-item-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Adding...';
+
+            try {
+                const itemType = document.getElementById('item-type').value;
+                const itemNumber = document.getElementById('item-number').value;
+                const itemSize = document.getElementById('item-size').value;
+                const itemColor = document.getElementById('item-color').value;
+                const itemCondition = document.getElementById('item-condition').value;
+                const itemSeason = document.getElementById('item-season').value;
+                const itemNotes = document.getElementById('item-notes').value;
+
+                // Generate unique identifier
+                const typePrefix = itemType.substring(0, 3).toUpperCase();
+                const numberPart = itemNumber ? `#${itemNumber}` : `#${Date.now().toString().slice(-4)}`;
+                const sizePart = itemSize !== 'one_size' ? itemSize : 'OS';
+                const randomPart = Math.random().toString(36).substring(2, 5).toUpperCase();
+                const uniqueIdentifier = `${typePrefix}-${numberPart}-${sizePart}-${randomPart}`;
+
+                const newItem = {
+                    itemType: itemType,
+                    uniqueIdentifier: uniqueIdentifier,
+                    size: itemSize,
+                    colorVariant: itemColor,
+                    condition: itemCondition,
+                    season: itemSeason || null,
+                    notes: itemNotes || null,
+                    isAssigned: false,
+                    assignedTo: null,
+                    assignmentHistory: [],
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    createdBy: currentUser.uid
+                };
+
+                console.log('📦 Adding new item:', newItem);
+
+                // Add to Firestore
+                await db.collection('teams')
+                    .doc(userTeamId)
+                    .collection('kitItems')
+                    .add(newItem);
+
+                console.log('✅ Item added successfully');
+                alert('✅ Item added successfully!');
+                
+                closeAddItemModal();
+                await loadInventory(); // Reload inventory
+                checkAndUpdateLimits(); // Update limits
+
+            } catch (error) {
+                console.error('❌ Error adding item:', error);
+                alert('Error adding item: ' + error.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Add Item';
+            }
+        }
+
+        async function handleAddMember(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.getElementById('submit-member-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Adding...';
+
+            try {
+                const memberName = document.getElementById('member-name').value;
+                const memberEmail = document.getElementById('member-email').value;
+                const memberRole = document.getElementById('member-role').value;
+                const memberNumber = document.getElementById('member-number').value;
+
+                const newMember = {
+                    displayName: memberName,
+                    email: memberEmail,
+                    role: memberRole,
+                    playerNumber: memberNumber ? parseInt(memberNumber) : null,
+                    joinedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    addedBy: currentUser.uid,
+                    status: 'pending', // User hasn't joined yet
+                    hasPremiumAccess: false
+                };
+
+                console.log('👤 Adding new member:', newMember);
+
+                // Check if user exists
+                const usersQuery = await db.collection('users')
+                    .where('email', '==', memberEmail)
+                    .limit(1)
+                    .get();
+
+                let userId;
+                if (!usersQuery.empty) {
+                    // User exists
+                    userId = usersQuery.docs[0].id;
+                    newMember.status = 'active';
+                } else {
+                    // User doesn't exist yet - create placeholder with email as ID
+                    userId = memberEmail.replace(/[^a-zA-Z0-9]/g, '_');
+                }
+
+                // Add to team members collection
+                await db.collection('teams')
+                    .doc(userTeamId)
+                    .collection('members')
+                    .doc(userId)
+                    .set(newMember);
+
+                // Update team member count
+                await db.collection('teams')
+                    .doc(userTeamId)
+                    .update({
+                        memberCount: firebase.firestore.FieldValue.increment(1),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+
+                console.log('✅ Member added successfully');
+                alert('✅ Member added successfully!');
+                
+                closeAddMemberModal();
+                await loadMembers(); // Reload members
+                checkAndUpdateLimits(); // Update limits
+
+            } catch (error) {
+                console.error('❌ Error adding member:', error);
+                alert('Error adding member: ' + error.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Add Member';
+            }
+        }
+
+        async function handleCreateAssignment(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.getElementById('submit-assignment-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Creating...';
+
+            try {
+                const itemId = document.getElementById('assignment-item').value;
+                const memberId = document.getElementById('assignment-member').value;
+                const notes = document.getElementById('assignment-notes').value;
+
+                console.log('🔄 Creating assignment:', { itemId, memberId, notes });
+
+                // Update item with assignment
+                await db.collection('teams')
+                    .doc(userTeamId)
+                    .collection('kitItems')
+                    .doc(itemId)
+                    .update({
+                        isAssigned: true,
+                        assignedTo: memberId,
+                        assignedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        assignmentNotes: notes || null,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        assignmentHistory: firebase.firestore.FieldValue.arrayUnion({
+                            assignedTo: memberId,
+                            assignedAt: new Date().toISOString(),
+                            assignedBy: currentUser.uid,
+                            notes: notes || null
+                        })
+                    });
+
+                console.log('✅ Assignment created successfully');
+                alert('✅ Assignment created successfully!');
+                
+                closeCreateAssignmentModal();
+                await loadInventory(); // Reload inventory
+                checkAndUpdateLimits(); // Update limits
+
+            } catch (error) {
+                console.error('❌ Error creating assignment:', error);
+                alert('Error creating assignment: ' + error.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Create Assignment';
+            }
+        }
+
+        // Helper function to get display name for items
+        function getDisplayName(item) {
+            if (item.customItemTypeId && customItemTypes[item.customItemTypeId]) {
+                return customItemTypes[item.customItemTypeId];
+            }
+            
+            const typeNames = {
+                'jersey': '👕 Jersey',
+                'training_jersey': '🏃 Training Jersey',
+                'shorts': '🩳 Shorts',
+                'socks': '🧦 Socks',
+                'goalkeeper_jersey': '🥅 GK Jersey',
+                'goalkeeper_gloves': '🧤 GK Gloves',
+                'training_bib': '🟦 Training Bib',
+                'ball': '⚽ Ball',
+                'cone': '🔶 Cone',
+                'medical_kit': '🏥 Medical Kit',
+                'boots': '👟 Boots',
+                'bag': '🎒 Bag'
+            };
+            
+            return typeNames[item.itemType] || item.itemType || 'Unknown';
+        }
+
     </script>
 </body>
 </html>
