@@ -2723,11 +2723,20 @@
         async function checkPremiumStatus(userData) {
             try {
                 console.log('💎 Checking premium status...');
+                console.log('💎 User data received:', userData);
                 
-                // Check if user has manual premium access
+                // Check if user has TeamKitX premium (PRIMARY CHECK)
+                if (userData.teamKitXPremium === true) {
+                    isPremium = true;
+                    console.log('✅ TeamKitX Premium access granted from user document');
+                    updatePremiumUI(true);
+                    return;
+                }
+
+                // Check legacy field names for backwards compatibility
                 if (userData.hasPremiumAccess === true) {
                     isPremium = true;
-                    console.log('✅ Manual premium access granted');
+                    console.log('✅ Manual premium access granted (legacy field)');
                     updatePremiumUI(true);
                     return;
                 }
@@ -2744,7 +2753,8 @@
                         const memberData = memberDoc.data();
                         console.log('👤 Member data:', memberData);
                         
-                        if (memberData.hasPremiumAccess === true) {
+                        // Check TeamKitX premium at member level
+                        if (memberData.teamKitXPremium === true || memberData.hasPremiumAccess === true) {
                             isPremium = true;
                             console.log('✅ Premium access from team member document');
                             updatePremiumUI(true);
@@ -2760,6 +2770,7 @@
                 
                 if (subscriptionDoc.exists) {
                     const subData = subscriptionDoc.data();
+                    console.log('📄 Subscription data:', subData);
                     if (subData.tier === 'premium' && subData.isActive) {
                         isPremium = true;
                         console.log('✅ Active premium subscription found');
@@ -2770,7 +2781,7 @@
 
                 // Default to free tier
                 isPremium = false;
-                console.log('📦 Free tier user');
+                console.log('📦 Free tier user - no premium indicators found');
                 updatePremiumUI(false);
                 
             } catch (error) {
