@@ -827,11 +827,12 @@
                 emptyDiv.style.display = 'none';
                 inventoryList.innerHTML = '';
 
-                // Query inventory items for this team
-                const itemsSnapshot = await db.collection('kitItems')
-                    .where('teamId', '==', userTeamId)
+                // Query inventory items from team's subcollection
+                const itemsSnapshot = await db.collection('teams')
+                    .doc(userTeamId)
+                    .collection('kitItems')
                     .orderBy('createdAt', 'desc')
-                    .limit(50)
+                    .limit(100)
                     .get();
 
                 console.log('📦 Found', itemsSnapshot.size, 'items');
@@ -851,10 +852,10 @@
                     const item = doc.data();
                     totalItems++;
                     
-                    // Check if item is assigned
-                    if (item.currentLocation === 'assigned' || item.assignedTo) {
+                    // Check if item is with player (assigned)
+                    if (item.currentLocation === 'with_player') {
                         assignedItems++;
-                    } else {
+                    } else if (item.currentLocation === 'storage') {
                         availableItems++;
                     }
 
@@ -875,8 +876,9 @@
 
         async function loadMembers() {
             try {
-                const membersSnapshot = await db.collection('teamMembers')
-                    .where('teamId', '==', userTeamId)
+                const membersSnapshot = await db.collection('teams')
+                    .doc(userTeamId)
+                    .collection('members')
                     .get();
 
                 const memberCount = membersSnapshot.size;
@@ -949,9 +951,9 @@
                 'excellent': '💚 Excellent',
                 'good': '👍 Good',
                 'fair': '⚠️ Fair',
-                'worn': '📉 Worn',
                 'poor': '🔴 Poor',
-                'damaged': '💔 Damaged'
+                'damaged': '💔 Damaged',
+                'beyond_repair': '❌ Beyond Repair'
             };
             return conditions[condition] || condition || 'Unknown';
         }
@@ -959,10 +961,12 @@
         function formatLocation(location) {
             const locations = {
                 'storage': '🏠 Storage',
-                'assigned': '👤 Assigned',
-                'maintenance': '🔧 Maintenance',
-                'transit': '🚚 In Transit',
-                'lost': '❌ Lost'
+                'with_player': '👤 With Player',
+                'being_washed': '💧 Being Washed',
+                'being_repaired': '🔧 Being Repaired',
+                'in_transit': '🚚 In Transit',
+                'lost': '❌ Lost',
+                'disposed': '🗑️ Disposed'
             };
             return locations[location] || location || 'Unknown';
         }
