@@ -1691,16 +1691,59 @@
             assignments: 10
         };
 
+        // ============ UTILITY FUNCTIONS ============
+
+        function clearAllData() {
+            console.log('🧹 Clearing all cached data...');
+            
+            // Reset all data arrays
+            allItems = [];
+            teamMembers = [];
+            customItemTypes = {};
+            customItemTypeCategories = {};
+            
+            // Reset counts
+            currentItemCount = 0;
+            currentMemberCount = 0;
+            currentAssignmentCount = 0;
+            
+            // Reset premium status
+            isPremium = false;
+            
+            // Reset team ID
+            userTeamId = null;
+            
+            // Clear active filters
+            activeFilters = {
+                search: '',
+                category: '',
+                type: '',
+                number: '',
+                size: '',
+                color: '',
+                season: '',
+                condition: '',
+                location: ''
+            };
+            
+            console.log('✅ All data cleared');
+        }
+
         // ============ AUTH FUNCTIONS ============
 
         // Check Auth State
         auth.onAuthStateChanged(async (user) => {
             if (user) {
+                // Clear all cached data when switching users
+                clearAllData();
+                
                 currentUser = user;
                 console.log('✅ User logged in:', user.email);
                 await loadUserData();
                 showDashboard();
             } else {
+                // Clear all data on logout
+                clearAllData();
                 currentUser = null;
                 showLogin();
             }
@@ -2905,6 +2948,19 @@
         }
 
         function showCreateAssignmentModal() {
+            // Check if we have items and members
+            const availableItems = allItems.filter(item => !item.assignedTo && !item.isAssigned);
+            
+            if (availableItems.length === 0) {
+                alert('⚠️ No available items to assign! Please add items first.');
+                return;
+            }
+            
+            if (teamMembers.length === 0) {
+                alert('⚠️ No team members found! Please add team members first.');
+                return;
+            }
+            
             // Check limits
             if (!isPremium && currentAssignmentCount >= FREE_TIER_LIMITS.assignments) {
                 document.getElementById('assignment-limit-warning').style.display = 'flex';
@@ -2918,10 +2974,21 @@
             // Populate item dropdown (only available items)
             const itemSelect = document.getElementById('assignment-item');
             itemSelect.innerHTML = '<option value="">Choose an item...</option>';
-            allItems.filter(item => !item.assignedTo).forEach(item => {
+            availableItems.forEach(item => {
                 const option = document.createElement('option');
                 option.value = item.id;
-                option.textContent = `${getDisplayName(item)} - ${item.size || 'N/A'}`;
+                
+                // Build display text with number if available
+                const itemNumber = extractItemNumber(item.uniqueIdentifier);
+                const displayName = getDisplayName(item);
+                const size = item.size || 'N/A';
+                
+                if (itemNumber) {
+                    option.textContent = `#${itemNumber} - ${displayName} - ${size}`;
+                } else {
+                    option.textContent = `${displayName} - ${size}`;
+                }
+                
                 itemSelect.appendChild(option);
             });
 
@@ -2931,7 +2998,7 @@
             teamMembers.forEach(member => {
                 const option = document.createElement('option');
                 option.value = member.id;
-                option.textContent = member.displayName || member.email;
+                option.textContent = member.displayName || member.name || member.email;
                 memberSelect.appendChild(option);
             });
 
