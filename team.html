@@ -382,39 +382,70 @@
         let userTeamId = null;
         let allMembers = [];
         let currentTab = 'players';
+        let isFirstAuthCheck = true;
+
+        // Show initial loading
+        document.getElementById('loading').style.display = 'block';
 
         // Check auth state
         auth.onAuthStateChanged(async (user) => {
+            console.log('🔐 Auth state changed (first check: ' + isFirstAuthCheck + '):', user ? user.email : 'No user');
+            
             if (user) {
                 currentUser = user;
+                console.log('✅ User authenticated:', user.email);
+                console.log('✅ Loading team data...');
                 await loadUserData();
             } else {
-                // Redirect to login
-                window.location.href = 'app.html';
+                // Only redirect if this isn't the first auth check
+                // Firebase Auth restores sessions asynchronously, so first callback might be null
+                if (!isFirstAuthCheck) {
+                    console.log('❌ No user after initial auth check, redirecting to app.html');
+                    window.location.href = 'app.html';
+                } else {
+                    console.log('⏳ First auth check with no user, waiting for session restore...');
+                }
             }
+            
+            // After first check, set flag to false
+            isFirstAuthCheck = false;
         });
 
         async function loadUserData() {
             try {
+                console.log('📄 Loading user document for:', currentUser.uid);
                 const userDoc = await db.collection('users').doc(currentUser.uid).get();
                 
                 if (userDoc.exists) {
                     const userData = userDoc.data();
+                    console.log('📄 User data loaded:', userData);
                     
                     // Get team ID
                     if (userData.teamIds && userData.teamIds.length > 0) {
                         userTeamId = userData.teamIds[0];
+                        console.log('✅ Team ID from teamIds:', userTeamId);
                     } else if (userData.teamId) {
                         userTeamId = userData.teamId;
+                        console.log('✅ Team ID from teamId (legacy):', userTeamId);
                     }
 
                     if (userTeamId) {
                         await loadTeamData();
                         await loadMembers();
+                    } else {
+                        console.error('❌ No team ID found for user');
+                        document.getElementById('loading').style.display = 'none';
+                        document.getElementById('empty-state').style.display = 'block';
                     }
+                } else {
+                    console.error('❌ User document does not exist');
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('empty-state').style.display = 'block';
                 }
             } catch (error) {
-                console.error('Error loading user data:', error);
+                console.error('❌ Error loading user data:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('empty-state').style.display = 'block';
             }
         }
 
