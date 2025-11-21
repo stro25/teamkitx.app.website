@@ -378,6 +378,9 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
+        // Set persistence to LOCAL (persist across browser sessions)
+        auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+
         let currentUser = null;
         let userTeamId = null;
         let allMembers = [];
@@ -386,19 +389,31 @@
         // Show initial loading
         document.getElementById('loading').style.display = 'block';
 
-        // Simple auth check - no redirects, just load data
+        // Wait for auth state to be ready
+        let authReady = false;
         auth.onAuthStateChanged(async (user) => {
+            console.log('🔐 Auth state changed:', user ? user.email : 'No user', 'Ready:', authReady);
+            
             if (user) {
                 currentUser = user;
                 console.log('✅ User authenticated:', user.email);
                 await loadUserData();
             } else {
-                console.log('⚠️ No user found');
-                // Don't redirect - just show empty state
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('empty-state').style.display = 'block';
-                document.querySelector('.empty-state h3').textContent = 'Not Logged In';
-                document.querySelector('.empty-state p').innerHTML = 'Please <a href="app.html" style="color: #CCFF00;">return to dashboard</a>';
+                // Wait briefly for session restore before showing error
+                if (!authReady) {
+                    authReady = true;
+                    console.log('⏳ Waiting for session to restore...');
+                    // Give Firebase 500ms to restore session
+                    setTimeout(() => {
+                        if (!currentUser) {
+                            console.log('❌ No user after wait');
+                            document.getElementById('loading').style.display = 'none';
+                            document.getElementById('empty-state').style.display = 'block';
+                            document.querySelector('.empty-state h3').textContent = 'Not Logged In';
+                            document.querySelector('.empty-state p').innerHTML = 'Please <a href="app.html" style="color: #CCFF00;">return to dashboard</a>';
+                        }
+                    }, 500);
+                }
             }
         });
 
