@@ -1212,23 +1212,34 @@
                         <label for="item-type">Item Type</label>
                         <select id="item-type" required>
                             <option value="">Select type...</option>
-                            <option value="jersey">👕 Jersey</option>
-                            <option value="training_jersey">🏃 Training Jersey</option>
-                            <option value="shorts">🩳 Shorts</option>
-                            <option value="socks">🧦 Socks</option>
-                            <option value="goalkeeper_jersey">🥅 Goalkeeper Jersey</option>
-                            <option value="goalkeeper_gloves">🧤 Goalkeeper Gloves</option>
-                            <option value="training_bib">🟦 Training Bib</option>
-                            <option value="ball">⚽ Ball</option>
-                            <option value="cone">🔶 Cone</option>
-                            <option value="medical_kit">🏥 Medical Kit</option>
-                            <option value="boots">👟 Boots</option>
-                            <option value="bag">🎒 Bag</option>
+                            <optgroup label="Game Kits">
+                                <option value="jersey">👕 Jersey</option>
+                                <option value="shorts">🩳 Shorts</option>
+                                <option value="socks">🧦 Socks</option>
+                            </optgroup>
+                            <optgroup label="Training">
+                                <option value="training_shirt">🏃 Training Shirt</option>
+                                <option value="bibs">🟦 Training Bibs</option>
+                                <option value="tracksuit">🧥 Tracksuit</option>
+                                <option value="balls">⚽ Balls</option>
+                                <option value="cones">🔶 Cones</option>
+                            </optgroup>
+                            <optgroup label="Goalkeeper">
+                                <option value="goalkeeping_kit">🥅 Goalkeeping Kit</option>
+                                <option value="gloves">🧤 Gloves</option>
+                            </optgroup>
+                            <optgroup label="Equipment & Accessories">
+                                <option value="boots">👟 Boots</option>
+                                <option value="protective_gear">🛡️ Protective Gear</option>
+                            </optgroup>
+                            <optgroup label="Other">
+                                <option value="other">📦 Other</option>
+                            </optgroup>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="item-number">Number (optional)</label>
-                        <input type="number" id="item-number" placeholder="e.g., 10">
+                        <input type="number" id="item-number" placeholder="e.g., 10" min="0" max="999">
                     </div>
                 </div>
                 <div class="form-row">
@@ -1258,6 +1269,57 @@
                         </select>
                     </div>
                 </div>
+                <!-- Purchase Information -->
+                <div style="margin-top: 24px; margin-bottom: 8px; border-top: 1px solid rgba(204, 255, 0, 0.2); padding-top: 20px;">
+                    <h3 style="color: #CCFF00; font-size: 0.95rem; margin-bottom: 16px;">💰 Purchase Information</h3>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="item-purchase-price">Purchase Price (optional)</label>
+                        <input type="number" id="item-purchase-price" placeholder="0.00" step="0.01" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="item-supplier">Supplier</label>
+                        <select id="item-supplier">
+                            <option value="Nike">Nike</option>
+                            <option value="Adidas">Adidas</option>
+                            <option value="Puma">Puma</option>
+                            <option value="Under Armour">Under Armour</option>
+                            <option value="New Balance">New Balance</option>
+                            <option value="Umbro">Umbro</option>
+                            <option value="Kappa">Kappa</option>
+                            <option value="Joma">Joma</option>
+                            <option value="Macron">Macron</option>
+                            <option value="Errea">Errea</option>
+                            <option value="Jako">Jako</option>
+                            <option value="Hummel">Hummel</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Identification -->
+                <div style="margin-top: 24px; margin-bottom: 8px; border-top: 1px solid rgba(204, 255, 0, 0.2); padding-top: 20px;">
+                    <h3 style="color: #CCFF00; font-size: 0.95rem; margin-bottom: 16px;">🔖 Identification</h3>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="item-season">Season (optional)</label>
+                        <input type="text" id="item-season" placeholder="e.g., 2024/25">
+                    </div>
+                    <div class="form-group">
+                        <label for="item-unique-id">Custom ID (optional)</label>
+                        <input type="text" id="item-unique-id" placeholder="Leave blank for auto-generation">
+                        <small style="color: rgba(255,255,255,0.6); display: block; margin-top: 4px; font-size: 0.75rem;">
+                            Auto-generated if empty
+                        </small>
+                    </div>
+                </div>
+
+                <!-- Status & Location -->
+                <div style="margin-top: 24px; margin-bottom: 8px; border-top: 1px solid rgba(204, 255, 0, 0.2); padding-top: 20px;">
+                    <h3 style="color: #CCFF00; font-size: 0.95rem; margin-bottom: 16px;">📍 Status & Location</h3>
+                </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="item-condition">Condition</label>
@@ -1267,16 +1329,28 @@
                             <option value="good">👍 Good</option>
                             <option value="fair">⚠️ Fair</option>
                             <option value="poor">🔴 Poor</option>
+                            <option value="damaged">💔 Damaged</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="item-season">Season (optional)</label>
-                        <input type="text" id="item-season" placeholder="e.g., 2024/25">
+                        <label for="item-location">Location</label>
+                        <select id="item-location">
+                            <option value="storage">🏠 Storage</option>
+                            <option value="with_player">👤 With Player</option>
+                            <option value="being_washed">💧 Being Washed</option>
+                            <option value="being_repaired">🔧 Being Repaired</option>
+                            <option value="in_transit">🚚 In Transit</option>
+                        </select>
                     </div>
                 </div>
+
+                <!-- Notes -->
+                <div style="margin-top: 24px; margin-bottom: 8px; border-top: 1px solid rgba(204, 255, 0, 0.2); padding-top: 20px;">
+                    <h3 style="color: #CCFF00; font-size: 0.95rem; margin-bottom: 16px;">📝 Notes</h3>
+                </div>
                 <div class="form-group">
-                    <label for="item-notes">Notes (optional)</label>
-                    <textarea id="item-notes" placeholder="Any additional information..."></textarea>
+                    <label for="item-notes">Additional Notes (optional)</label>
+                    <textarea id="item-notes" placeholder="Any additional information about this item..."></textarea>
                 </div>
                 <button type="submit" class="btn-submit" id="submit-item-btn">Add Item</button>
             </form>
@@ -1363,6 +1437,151 @@
                     <textarea id="assignment-notes" placeholder="Reason for assignment or additional info..."></textarea>
                 </div>
                 <button type="submit" class="btn-submit" id="submit-assignment-btn">Create Assignment</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Create Numbered Set Modal (Premium Feature) -->
+    <div id="numbered-set-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🔢 Create Numbered Set <span style="color: #CCFF00; font-size: 0.8em;">👑 Premium</span></h2>
+                <button class="modal-close" onclick="closeNumberedSetModal()">×</button>
+            </div>
+            <div id="numbered-set-premium-warning" class="limit-warning" style="display: none;">
+                <span>👑</span>
+                <div>
+                    <strong>Premium Feature Only!</strong>
+                    <p>Numbered Set Creator is a Premium feature. Upgrade to create multiple numbered items at once (e.g., Jerseys #1-25).</p>
+                </div>
+            </div>
+            <form id="numbered-set-form" onsubmit="handleCreateNumberedSet(event)">
+                <!-- Item Type & Category -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="set-item-type">Item Type</label>
+                        <select id="set-item-type" required>
+                            <option value="">Select type...</option>
+                            <option value="jersey">👕 Jersey</option>
+                            <option value="shorts">🩳 Shorts</option>
+                            <option value="socks">🧦 Socks</option>
+                            <option value="training_shirt">🏃 Training Shirt</option>
+                            <option value="bibs">🟦 Training Bibs</option>
+                            <option value="gloves">🧤 Gloves</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="set-numbering-mode">Numbering Mode</label>
+                        <select id="set-numbering-mode" onchange="updateNumberingMode()" required>
+                            <option value="sequential">📊 Sequential (e.g., 1-25)</option>
+                            <option value="custom">✏️ Custom Numbers (e.g., 1,7,10,23)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Sequential Mode -->
+                <div id="sequential-mode" class="form-row">
+                    <div class="form-group">
+                        <label for="set-start-number">Start Number</label>
+                        <input type="number" id="set-start-number" value="1" min="0" max="999" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="set-end-number">End Number</label>
+                        <input type="number" id="set-end-number" value="25" min="0" max="999" required>
+                    </div>
+                </div>
+
+                <!-- Custom Mode -->
+                <div id="custom-mode" class="form-group" style="display: none;">
+                    <label for="set-custom-numbers">Custom Numbers (comma-separated)</label>
+                    <input type="text" id="set-custom-numbers" placeholder="e.g., 1,7,10,23,99">
+                    <small style="color: rgba(255,255,255,0.6); display: block; margin-top: 4px;">
+                        Enter numbers separated by commas
+                    </small>
+                </div>
+
+                <!-- Common Attributes -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="set-size">Size</label>
+                        <select id="set-size" required>
+                            <option value="XS">XS</option>
+                            <option value="S">S</option>
+                            <option value="M" selected>M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="set-color">Color</label>
+                        <select id="set-color" required>
+                            <option value="#FF0000">🔴 Red</option>
+                            <option value="#0000FF">🔵 Blue</option>
+                            <option value="#00FF00">🟢 Green</option>
+                            <option value="#FFFF00">🟡 Yellow</option>
+                            <option value="#000000">⚫ Black</option>
+                            <option value="#FFFFFF">⚪ White</option>
+                            <option value="#FFA500">🟠 Orange</option>
+                            <option value="#800080">🟣 Purple</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="set-condition">Condition</label>
+                        <select id="set-condition" required>
+                            <option value="new" selected>✨ New</option>
+                            <option value="excellent">💚 Excellent</option>
+                            <option value="good">👍 Good</option>
+                            <option value="fair">⚠️ Fair</option>
+                            <option value="poor">🔴 Poor</option>
+                            <option value="damaged">💔 Damaged</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="set-location">Location</label>
+                        <select id="set-location">
+                            <option value="storage">🏠 Storage</option>
+                            <option value="with_player">👤 With Player</option>
+                            <option value="being_washed">💧 Being Washed</option>
+                            <option value="being_repaired">🔧 Being Repaired</option>
+                            <option value="in_transit">🚚 In Transit</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="set-season">Season (optional)</label>
+                        <input type="text" id="set-season" placeholder="e.g., 2024/25">
+                    </div>
+                    <div class="form-group">
+                        <label for="set-supplier">Supplier</label>
+                        <select id="set-supplier">
+                            <option value="Nike">Nike</option>
+                            <option value="Adidas">Adidas</option>
+                            <option value="Puma">Puma</option>
+                            <option value="Under Armour">Under Armour</option>
+                            <option value="New Balance">New Balance</option>
+                            <option value="Umbro">Umbro</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="set-notes">Notes (optional)</label>
+                    <textarea id="set-notes" placeholder="Additional information for all items..."></textarea>
+                </div>
+
+                <!-- Item Count Preview -->
+                <div style="background: rgba(204, 255, 0, 0.1); border: 1px solid rgba(204, 255, 0, 0.3); border-radius: 8px; padding: 12px; margin-bottom: 20px;">
+                    <strong style="color: #CCFF00;">Items to create: <span id="set-item-count">25</span></strong>
+                </div>
+
+                <button type="submit" class="btn-submit" id="submit-numbered-set-btn">Create Numbered Set</button>
             </form>
         </div>
     </div>
@@ -1477,6 +1696,11 @@
                 <button class="btn-create" id="btn-add-item" onclick="showAddItemModal()">
                     <span>➕</span>
                     <span>Add New Item</span>
+                </button>
+                <button class="btn-create" id="btn-create-numbered-set" onclick="showNumberedSetModal()" title="Premium Feature">
+                    <span>🔢</span>
+                    <span>Create Numbered Set</span>
+                    <span style="font-size: 0.7em;">👑</span>
                 </button>
                 <button class="btn-create" id="btn-add-member" onclick="showAddMemberModal()">
                     <span>👤</span>
@@ -2871,6 +3095,7 @@
 
             // Update buttons
             const btnAddItem = document.getElementById('btn-add-item');
+            const btnNumberedSet = document.getElementById('btn-create-numbered-set');
             const btnAddMember = document.getElementById('btn-add-member');
             const btnCreateAssignment = document.getElementById('btn-create-assignment');
 
@@ -2883,6 +3108,10 @@
                     btnAddItem.disabled = false;
                     btnAddItem.title = '';
                 }
+
+                // Numbered set creator - Premium only
+                btnNumberedSet.disabled = true;
+                btnNumberedSet.title = 'Premium Feature - Upgrade to create numbered sets';
 
                 // Check member limit
                 if (currentMemberCount >= FREE_TIER_LIMITS.members) {
@@ -2904,6 +3133,8 @@
             } else {
                 // Premium: enable all
                 btnAddItem.disabled = false;
+                btnNumberedSet.disabled = false;
+                btnNumberedSet.title = 'Create numbered sets (e.g., Jerseys #1-25)';
                 btnAddMember.disabled = false;
                 btnCreateAssignment.disabled = false;
             }
@@ -3010,6 +3241,70 @@
             document.getElementById('create-assignment-form').reset();
         }
 
+        function showNumberedSetModal() {
+            // Check if premium
+            if (!isPremium) {
+                document.getElementById('numbered-set-premium-warning').style.display = 'flex';
+                document.getElementById('submit-numbered-set-btn').disabled = true;
+                alert('👑 Premium Feature\n\nNumbered Set Creator is a Premium feature that allows you to create multiple numbered items at once (e.g., Jerseys #1-25).\n\nUpgrade to Premium to unlock this feature!');
+                return;
+            } else {
+                document.getElementById('numbered-set-premium-warning').style.display = 'none';
+                document.getElementById('submit-numbered-set-btn').disabled = false;
+            }
+            
+            updateItemCount();
+            document.getElementById('numbered-set-modal').classList.add('active');
+        }
+
+        function closeNumberedSetModal() {
+            document.getElementById('numbered-set-modal').classList.remove('active');
+            document.getElementById('numbered-set-form').reset();
+            document.getElementById('sequential-mode').style.display = 'flex';
+            document.getElementById('custom-mode').style.display = 'none';
+        }
+
+        function updateNumberingMode() {
+            const mode = document.getElementById('set-numbering-mode').value;
+            if (mode === 'sequential') {
+                document.getElementById('sequential-mode').style.display = 'flex';
+                document.getElementById('custom-mode').style.display = 'none';
+            } else {
+                document.getElementById('sequential-mode').style.display = 'none';
+                document.getElementById('custom-mode').style.display = 'block';
+            }
+            updateItemCount();
+        }
+
+        function updateItemCount() {
+            const mode = document.getElementById('set-numbering-mode').value;
+            let count = 0;
+            
+            if (mode === 'sequential') {
+                const start = parseInt(document.getElementById('set-start-number').value) || 1;
+                const end = parseInt(document.getElementById('set-end-number').value) || 25;
+                count = Math.max(0, end - start + 1);
+            } else {
+                const customNumbers = document.getElementById('set-custom-numbers').value;
+                if (customNumbers) {
+                    count = customNumbers.split(',').filter(n => n.trim() !== '').length;
+                }
+            }
+            
+            document.getElementById('set-item-count').textContent = count;
+        }
+
+        // Add event listeners to update count
+        document.addEventListener('DOMContentLoaded', () => {
+            const startInput = document.getElementById('set-start-number');
+            const endInput = document.getElementById('set-end-number');
+            const customInput = document.getElementById('set-custom-numbers');
+            
+            if (startInput) startInput.addEventListener('input', updateItemCount);
+            if (endInput) endInput.addEventListener('input', updateItemCount);
+            if (customInput) customInput.addEventListener('input', updateItemCount);
+        });
+
         // ============ FORM SUBMISSION HANDLERS ============
 
         async function handleAddItem(event) {
@@ -3020,32 +3315,67 @@
             submitBtn.textContent = 'Adding...';
 
             try {
+                // Basic Info
                 const itemType = document.getElementById('item-type').value;
                 const itemNumber = document.getElementById('item-number').value;
                 const itemSize = document.getElementById('item-size').value;
                 const itemColor = document.getElementById('item-color').value;
-                const itemCondition = document.getElementById('item-condition').value;
+                
+                // Purchase Info
+                const purchasePrice = document.getElementById('item-purchase-price').value;
+                const supplier = document.getElementById('item-supplier').value;
+                
+                // Identification
                 const itemSeason = document.getElementById('item-season').value;
+                const customUniqueId = document.getElementById('item-unique-id').value;
+                
+                // Status & Location
+                const itemCondition = document.getElementById('item-condition').value;
+                const itemLocation = document.getElementById('item-location').value;
+                
+                // Notes
                 const itemNotes = document.getElementById('item-notes').value;
 
-                // Generate unique identifier
-                const typePrefix = itemType.substring(0, 3).toUpperCase();
-                const numberPart = itemNumber ? `#${itemNumber}` : `#${Date.now().toString().slice(-4)}`;
-                const sizePart = itemSize !== 'one_size' ? itemSize : 'OS';
-                const randomPart = Math.random().toString(36).substring(2, 5).toUpperCase();
-                const uniqueIdentifier = `${typePrefix}-${numberPart}-${sizePart}-${randomPart}`;
+                // Generate unique identifier (use custom if provided, otherwise auto-generate)
+                let uniqueIdentifier;
+                if (customUniqueId && customUniqueId.trim() !== '') {
+                    uniqueIdentifier = customUniqueId.trim();
+                } else {
+                    const typePrefix = itemType.substring(0, 3).toUpperCase();
+                    const numberPart = itemNumber ? `#${itemNumber}` : `#${Date.now().toString().slice(-4)}`;
+                    const sizePart = itemSize !== 'one_size' ? itemSize : 'OS';
+                    const randomPart = Math.random().toString(36).substring(2, 5).toUpperCase();
+                    uniqueIdentifier = `${typePrefix}-${numberPart}-${sizePart}-${randomPart}`;
+                }
 
                 const newItem = {
+                    // Basic Info
                     itemType: itemType,
                     uniqueIdentifier: uniqueIdentifier,
                     size: itemSize,
                     colorVariant: itemColor,
-                    condition: itemCondition,
+                    
+                    // Purchase Info
+                    purchasePrice: purchasePrice ? parseFloat(purchasePrice) : 0,
+                    supplierInfo: supplier,
+                    
+                    // Identification
                     season: itemSeason || null,
+                    tags: itemNumber ? [`Number: ${itemNumber}`] : [],
+                    
+                    // Status & Location
+                    condition: itemCondition,
+                    currentLocation: itemLocation,
+                    
+                    // Notes
                     notes: itemNotes || null,
+                    
+                    // Assignment
                     isAssigned: false,
                     assignedTo: null,
                     assignmentHistory: [],
+                    
+                    // Metadata
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
                     createdBy: currentUser.uid
@@ -3197,6 +3527,129 @@
             }
         }
 
+        async function handleCreateNumberedSet(event) {
+            event.preventDefault();
+            
+            // Premium check
+            if (!isPremium) {
+                alert('👑 Premium Feature\n\nPlease upgrade to Premium to use the Numbered Set Creator.');
+                return;
+            }
+            
+            const submitBtn = document.getElementById('submit-numbered-set-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Creating items...';
+
+            try {
+                const mode = document.getElementById('set-numbering-mode').value;
+                const itemType = document.getElementById('set-item-type').value;
+                const size = document.getElementById('set-size').value;
+                const color = document.getElementById('set-color').value;
+                const condition = document.getElementById('set-condition').value;
+                const location = document.getElementById('set-location').value;
+                const season = document.getElementById('set-season').value;
+                const supplier = document.getElementById('set-supplier').value;
+                const notes = document.getElementById('set-notes').value;
+
+                // Get numbers to create
+                let numbers = [];
+                if (mode === 'sequential') {
+                    const start = parseInt(document.getElementById('set-start-number').value);
+                    const end = parseInt(document.getElementById('set-end-number').value);
+                    
+                    if (start > end) {
+                        alert('Start number must be less than or equal to end number');
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Create Numbered Set';
+                        return;
+                    }
+                    
+                    for (let i = start; i <= end; i++) {
+                        numbers.push(i);
+                    }
+                } else {
+                    const customNumbersStr = document.getElementById('set-custom-numbers').value;
+                    numbers = customNumbersStr.split(',')
+                        .map(n => parseInt(n.trim()))
+                        .filter(n => !isNaN(n) && n >= 0);
+                    
+                    if (numbers.length === 0) {
+                        alert('Please enter valid numbers');
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Create Numbered Set';
+                        return;
+                    }
+                }
+
+                console.log(`🔢 Creating ${numbers.length} numbered items:`, numbers);
+
+                // Create items one by one
+                let createdCount = 0;
+                for (const number of numbers) {
+                    const typePrefix = itemType.substring(0, 3).toUpperCase();
+                    const numberPart = `#${number}`;
+                    const sizePart = size !== 'one_size' ? size : 'OS';
+                    const randomPart = Math.random().toString(36).substring(2, 5).toUpperCase();
+                    const uniqueIdentifier = `${typePrefix}-${numberPart}-${sizePart}-${randomPart}`;
+
+                    const newItem = {
+                        // Basic Info
+                        itemType: itemType,
+                        uniqueIdentifier: uniqueIdentifier,
+                        size: size,
+                        colorVariant: color,
+                        
+                        // Purchase Info
+                        purchasePrice: 0,
+                        supplierInfo: supplier,
+                        
+                        // Identification
+                        season: season || null,
+                        tags: [`Number: ${number}`, `NumberedSet: ${numbers[0]}-${numbers[numbers.length-1]}`],
+                        
+                        // Status & Location
+                        condition: condition,
+                        currentLocation: location,
+                        
+                        // Notes
+                        notes: notes || null,
+                        
+                        // Assignment
+                        isAssigned: false,
+                        assignedTo: null,
+                        assignmentHistory: [],
+                        
+                        // Metadata
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        createdBy: currentUser.uid
+                    };
+
+                    await db.collection('teams')
+                        .doc(userTeamId)
+                        .collection('kitItems')
+                        .add(newItem);
+
+                    createdCount++;
+                    submitBtn.textContent = `Creating... ${createdCount}/${numbers.length}`;
+                }
+
+                console.log(`✅ Created ${createdCount} items successfully`);
+                alert(`✅ Successfully created ${createdCount} numbered items!`);
+                
+                closeNumberedSetModal();
+                await loadInventory(); // Reload inventory
+                checkAndUpdateLimits(); // Update limits
+
+            } catch (error) {
+                console.error('❌ Error creating numbered set:', error);
+                alert('Error creating numbered set: ' + error.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Create Numbered Set';
+            }
+        }
+
         // Helper function to get display name for items
         function getDisplayName(item) {
             if (item.customItemTypeId && customItemTypes[item.customItemTypeId]) {
@@ -3204,18 +3657,32 @@
             }
             
             const typeNames = {
+                // Game Kits
                 'jersey': '👕 Jersey',
-                'training_jersey': '🏃 Training Jersey',
                 'shorts': '🩳 Shorts',
                 'socks': '🧦 Socks',
-                'goalkeeper_jersey': '🥅 GK Jersey',
-                'goalkeeper_gloves': '🧤 GK Gloves',
-                'training_bib': '🟦 Training Bib',
-                'ball': '⚽ Ball',
-                'cone': '🔶 Cone',
-                'medical_kit': '🏥 Medical Kit',
+                // Training
+                'training_shirt': '🏃 Training Shirt',
+                'training_jersey': '🏃 Training Jersey', // Legacy
+                'bibs': '🟦 Bibs',
+                'tracksuit': '🧥 Tracksuit',
+                'balls': '⚽ Balls',
+                'ball': '⚽ Ball', // Legacy
+                'cones': '🔶 Cones',
+                'cone': '🔶 Cone', // Legacy
+                // Goalkeeper
+                'goalkeeping_kit': '🥅 Goalkeeping Kit',
+                'goalkeeper_jersey': '🥅 GK Jersey', // Legacy
+                'gloves': '🧤 Gloves',
+                'goalkeeper_gloves': '🧤 GK Gloves', // Legacy
+                // Equipment & Accessories
                 'boots': '👟 Boots',
-                'bag': '🎒 Bag'
+                'protective_gear': '🛡️ Protective Gear',
+                // Other
+                'other': '📦 Other',
+                'medical_kit': '🏥 Medical Kit', // Legacy
+                'bag': '🎒 Bag', // Legacy
+                'training_bib': '🟦 Training Bib' // Legacy
             };
             
             return typeNames[item.itemType] || item.itemType || 'Unknown';
