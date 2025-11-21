@@ -382,33 +382,24 @@
         let userTeamId = null;
         let allMembers = [];
         let currentTab = 'players';
-        let isFirstAuthCheck = true;
 
         // Show initial loading
         document.getElementById('loading').style.display = 'block';
 
-        // Check auth state
+        // Simple auth check - no redirects, just load data
         auth.onAuthStateChanged(async (user) => {
-            console.log('🔐 Auth state changed (first check: ' + isFirstAuthCheck + '):', user ? user.email : 'No user');
-            
             if (user) {
                 currentUser = user;
                 console.log('✅ User authenticated:', user.email);
-                console.log('✅ Loading team data...');
                 await loadUserData();
             } else {
-                // Only redirect if this isn't the first auth check
-                // Firebase Auth restores sessions asynchronously, so first callback might be null
-                if (!isFirstAuthCheck) {
-                    console.log('❌ No user after initial auth check, redirecting to app.html');
-                    window.location.href = 'app.html';
-                } else {
-                    console.log('⏳ First auth check with no user, waiting for session restore...');
-                }
+                console.log('⚠️ No user found');
+                // Don't redirect - just show empty state
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('empty-state').style.display = 'block';
+                document.querySelector('.empty-state h3').textContent = 'Not Logged In';
+                document.querySelector('.empty-state p').innerHTML = 'Please <a href="app.html" style="color: #CCFF00;">return to dashboard</a>';
             }
-            
-            // After first check, set flag to false
-            isFirstAuthCheck = false;
         });
 
         async function loadUserData() {
