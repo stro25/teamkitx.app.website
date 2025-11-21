@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Management - TeamKitX</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #000000;
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            border-bottom: 1px solid rgba(204, 255, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left h1 {
+            font-size: 1.8rem;
+            color: #CCFF00;
+            margin-bottom: 4px;
+        }
+
+        .header-left p {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .btn-back {
+            background: rgba(204, 255, 0, 0.1);
+            border: 1px solid rgba(204, 255, 0, 0.3);
+            color: #CCFF00;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-back:hover {
+            background: rgba(204, 255, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* Tab Control */
+        .tab-control {
+            display: flex;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 6px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 12px 20px;
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, #CCFF00 0%, #99CC00 100%);
+            color: #000000;
+        }
+
+        .tab-button:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        /* Section Header */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .section-header p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        .btn-add-member {
+            background: linear-gradient(135deg, #CCFF00 0%, #99CC00 100%);
+            color: #000000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-add-member:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(204, 255, 0, 0.4);
+        }
+
+        /* Members Grid */
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .member-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(204, 255, 0, 0.2);
+            border-radius: 16px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .member-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(204, 255, 0, 0.4);
+            transform: translateY(-4px);
+        }
+
+        .member-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .member-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #CCFF00 0%, #99CC00 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #000000;
+        }
+
+        .member-info {
+            flex: 1;
+        }
+
+        .member-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .member-role {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .role-player {
+            background: rgba(100, 149, 237, 0.2);
+            color: #6495ED;
+        }
+
+        .role-coach {
+            background: rgba(255, 165, 0, 0.2);
+            color: #FFA500;
+        }
+
+        .role-staff {
+            background: rgba(138, 43, 226, 0.2);
+            color: #8A2BE2;
+        }
+
+        .role-admin {
+            background: rgba(255, 69, 0, 0.2);
+            color: #FF4500;
+        }
+
+        .member-details {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .member-detail-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+
+        .empty-state h3 {
+            font-size: 1.3rem;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.95rem;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(204, 255, 0, 0.2);
+            border-top-color: #CCFF00;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <h1>Team Management</h1>
+                <p id="team-name">Loading...</p>
+            </div>
+            <a href="app.html" class="btn-back">
+                <span>←</span>
+                <span>Back to Dashboard</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Tab Control -->
+        <div class="tab-control">
+            <button class="tab-button active" id="tab-players" onclick="switchTab('players')">
+                <span>👥</span>
+                <span>Players</span>
+            </button>
+            <button class="tab-button" id="tab-coaches" onclick="switchTab('coaches')">
+                <span>🎯</span>
+                <span>Coaches</span>
+            </button>
+            <button class="tab-button" id="tab-staff" onclick="switchTab('staff')">
+                <span>⚙️</span>
+                <span>Staff</span>
+            </button>
+        </div>
+
+        <!-- Section Header -->
+        <div class="section-header">
+            <div>
+                <h2 id="section-title">Players</h2>
+                <p id="section-subtitle">Manage your team players</p>
+            </div>
+            <button class="btn-add-member" onclick="window.location.href='app.html#add-member'">
+                <span>➕</span>
+                <span>Add Member</span>
+            </button>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <div class="loading-text">Loading team members...</div>
+        </div>
+
+        <!-- Members Grid -->
+        <div id="members-grid" class="members-grid" style="display: none;">
+            <!-- Members will be populated here -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="empty-state" style="display: none;">
+            <div class="empty-state-icon">👥</div>
+            <h3>No Members Found</h3>
+            <p>Add team members to get started</p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // Firebase configuration (same as app.html)
+        const firebaseConfig = {
+            apiKey: "AIzaSyAXd1OqIkxM5mvKIgMOpKFm0J-9y2vgPyo",
+            authDomain: "teamwalletx.firebaseapp.com",
+            projectId: "teamwalletx",
+            storageBucket: "teamwalletx.appspot.com",
+            messagingSenderId: "289751776499",
+            appId: "1:289751776499:web:17f99f2a87f47a9f8d9f0e"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        let currentUser = null;
+        let userTeamId = null;
+        let allMembers = [];
+        let currentTab = 'players';
+
+        // Check auth state
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                currentUser = user;
+                await loadUserData();
+            } else {
+                // Redirect to login
+                window.location.href = 'app.html';
+            }
+        });
+
+        async function loadUserData() {
+            try {
+                const userDoc = await db.collection('users').doc(currentUser.uid).get();
+                
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    
+                    // Get team ID
+                    if (userData.teamIds && userData.teamIds.length > 0) {
+                        userTeamId = userData.teamIds[0];
+                    } else if (userData.teamId) {
+                        userTeamId = userData.teamId;
+                    }
+
+                    if (userTeamId) {
+                        await loadTeamData();
+                        await loadMembers();
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading user data:', error);
+            }
+        }
+
+        async function loadTeamData() {
+            try {
+                const teamDoc = await db.collection('teams').doc(userTeamId).get();
+                if (teamDoc.exists) {
+                    const teamData = teamDoc.data();
+                    document.getElementById('team-name').textContent = teamData.name || 'My Team';
+                }
+            } catch (error) {
+                console.error('Error loading team:', error);
+            }
+        }
+
+        async function loadMembers() {
+            try {
+                document.getElementById('loading').style.display = 'block';
+                document.getElementById('members-grid').style.display = 'none';
+                document.getElementById('empty-state').style.display = 'none';
+
+                const membersSnapshot = await db.collection('teams')
+                    .doc(userTeamId)
+                    .collection('members')
+                    .get();
+
+                allMembers = [];
+                membersSnapshot.forEach(doc => {
+                    allMembers.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+
+                console.log('Loaded members:', allMembers);
+                renderMembers();
+
+            } catch (error) {
+                console.error('Error loading members:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('empty-state').style.display = 'block';
+            }
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            
+            // Update tab buttons
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`tab-${tab}`).classList.add('active');
+            
+            // Update section header
+            const titles = {
+                'players': { title: 'Players', subtitle: 'Manage your team players' },
+                'coaches': { title: 'Coaches', subtitle: 'Manage coaching staff' },
+                'staff': { title: 'Staff', subtitle: 'Manage support staff' }
+            };
+            
+            document.getElementById('section-title').textContent = titles[tab].title;
+            document.getElementById('section-subtitle').textContent = titles[tab].subtitle;
+            
+            // Render filtered members
+            renderMembers();
+        }
+
+        function renderMembers() {
+            const membersGrid = document.getElementById('members-grid');
+            const loading = document.getElementById('loading');
+            const emptyState = document.getElementById('empty-state');
+
+            loading.style.display = 'none';
+
+            // Filter members based on current tab
+            let filteredMembers = allMembers.filter(member => {
+                const role = member.role?.toLowerCase() || 'player';
+                
+                if (currentTab === 'players') {
+                    return role === 'player';
+                } else if (currentTab === 'coaches') {
+                    return role === 'coach' || role === 'admin';
+                } else if (currentTab === 'staff') {
+                    return ['assistant', 'manager', 'physio', 'doctor', 'analyst', 'nutritionist'].includes(role);
+                }
+                return false;
+            });
+
+            if (filteredMembers.length === 0) {
+                membersGrid.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            membersGrid.style.display = 'grid';
+            membersGrid.innerHTML = '';
+
+            filteredMembers.forEach(member => {
+                const card = createMemberCard(member);
+                membersGrid.appendChild(card);
+            });
+        }
+
+        function createMemberCard(member) {
+            const card = document.createElement('div');
+            card.className = 'member-card';
+            card.onclick = () => alert('Member details coming soon! (Member: ' + (member.displayName || member.name) + ')');
+
+            const initial = (member.displayName || member.name || member.email || 'U')[0].toUpperCase();
+            const roleClass = getRoleClass(member.role);
+            const roleDisplay = formatRole(member.role);
+
+            card.innerHTML = `
+                <div class="member-header">
+                    <div class="member-avatar">${initial}</div>
+                    <div class="member-info">
+                        <div class="member-name">${member.displayName || member.name || 'Unknown'}</div>
+                        <span class="member-role ${roleClass}">${roleDisplay}</span>
+                    </div>
+                </div>
+                <div class="member-details">
+                    ${member.email ? `
+                        <div class="member-detail-row">
+                            <span>✉️</span>
+                            <span>${member.email}</span>
+                        </div>
+                    ` : ''}
+                    ${member.playerNumber ? `
+                        <div class="member-detail-row">
+                            <span>🔢</span>
+                            <span>Number: ${member.playerNumber}</span>
+                        </div>
+                    ` : ''}
+                    ${member.joinedAt ? `
+                        <div class="member-detail-row">
+                            <span>📅</span>
+                            <span>Joined: ${formatDate(member.joinedAt)}</span>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+
+            return card;
+        }
+
+        function getRoleClass(role) {
+            if (!role) return 'role-player';
+            role = role.toLowerCase();
+            
+            if (role === 'player') return 'role-player';
+            if (role === 'coach' || role === 'admin') return 'role-coach';
+            return 'role-staff';
+        }
+
+        function formatRole(role) {
+            if (!role) return 'Player';
+            
+            const roleNames = {
+                'player': '🏃 Player',
+                'coach': '👨‍🏫 Coach',
+                'assistant': '🤝 Assistant',
+                'manager': '💼 Manager',
+                'physio': '🏥 Physio',
+                'doctor': '⚕️ Doctor',
+                'analyst': '📊 Analyst',
+                'nutritionist': '🥗 Nutritionist',
+                'admin': '⚙️ Admin'
+            };
+            
+            return roleNames[role.toLowerCase()] || role;
+        }
+
+        function formatDate(timestamp) {
+            if (!timestamp) return '';
+            
+            const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return date.toLocaleDateString('en-US', options);
+        }
+    </script>
+</body>
+</html>
+
